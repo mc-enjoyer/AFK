@@ -9,7 +9,7 @@ Message keys:
 {DISPLAYNAME}	Displays player name (ex: schneckk)
 {AFKTIME}	Displays time (ex: 3m15s)
 
-VerHist:
+RELEASE HISTORY:
 3.0.1
 	Code optimizaton
 	Minor config changes

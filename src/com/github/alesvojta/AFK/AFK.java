@@ -12,15 +12,24 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.0.2
+ * @version 3.0.3
  */
 public class AFK extends JavaPlugin {
 
+    /**
+     * Mapa AFK hráčů.
+     */
     public HashMap<Player, String> afkPlayerMap;
-    private HashMap<Player, Calendar> afkTimeMap;
+    /**
+     * Instance konfigurace, vrací data z configu.
+     */
     public Config cfg;
+    private HashMap<Player, Calendar> afkTimeMap;
     private Events events;
 
+    /**
+     * Funkce se volá při zavádění pluginu.
+     */
     @Override
     public void onEnable() {
         this.afkPlayerMap = new HashMap();
@@ -29,6 +38,9 @@ public class AFK extends JavaPlugin {
         this.events = new Events(this);
     }
 
+    /**
+     * Funkce se volá při deaktivaci pluginu.
+     */
     @Override
     public void onDisable() {
         this.getLogger().info("Thank you for choosing AFK plugin!");

@@ -19,6 +19,11 @@ public class Events implements Listener {
     private AFK plugin;
     private HashMap<Player, Integer> task;
 
+    /**
+     * Konstruktor inicializuje proměnné a zavede registr událostí.
+     *
+     * @param plugin {com.github.alesvojta.AFK.AFK} Plugin
+     */
     public Events(AFK plugin) {
         this.task = new HashMap();
         this.plugin = plugin;

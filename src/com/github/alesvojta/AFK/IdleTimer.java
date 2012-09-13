@@ -12,6 +12,13 @@ public class IdleTimer implements Runnable {
     private AFK plugin;
     private Location lastLocation;
 
+    /**
+     * Kostruktor inicializuje proměnné a volá metodu updatePlayer(), která
+     * aktualizuje hráčovu pozici.
+     *
+     * @param player {org.bukkit.entity.Player} Hráč
+     * @param plugin {com.github.alesvojta.AFK.AFK} Plugin
+     */
     public IdleTimer(Player player, AFK plugin) {
         this.player = player;
         this.plugin = plugin;

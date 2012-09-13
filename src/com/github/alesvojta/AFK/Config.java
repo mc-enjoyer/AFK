@@ -9,7 +9,12 @@ public class Config {
 
     private Configuration cfg;
 
-    Config(AFK plugin) {
+    /**
+     * Konstruktor vytvoří konfigurační soubory.
+     *
+     * @param plugin {com.github.alesvojta.AFK.AFK} Plugin
+     */
+    public Config(AFK plugin) {
         this.cfg = plugin.getConfig();
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
