@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.0.1
+ * @version 3.0.2
  */
 public class AFK extends JavaPlugin {
 
@@ -156,12 +156,12 @@ public class AFK extends JavaPlugin {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = null;
+        Player player;
 
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
-            sender.sendMessage("[AFK] This command can only be run by a player!");
+            this.getLogger().info("This command can only be run by a player!");
             return true;
         }
 
