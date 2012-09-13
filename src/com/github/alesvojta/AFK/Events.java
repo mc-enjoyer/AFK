@@ -22,7 +22,7 @@ public class Events implements Listener {
     /**
      * Konstruktor inicializuje proměnné a zavede registr událostí.
      *
-     * @param plugin {com.github.alesvojta.AFK.AFK} Plugin
+     * @param plugin Plugin
      */
     public Events(AFK plugin) {
         this.task = new HashMap();
@@ -33,7 +33,7 @@ public class Events implements Listener {
     /**
      * Pokud se hráč pohne o 1 celý blok, je mu zrušen AFK status.
      *
-     * @param evt {org.bukkit.event.player.PlayerMoveEvent} Událost pohybu
+     * @param evt Událost pohybu
      */
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent evt) {
@@ -50,7 +50,7 @@ public class Events implements Listener {
     /**
      * Pokud hráč použije chat, je mu zrušen AFK status.
      *
-     * @param evt {org.bukkit.event.player.AsyncPlayerChatEvent} Událost chatu
+     * @param evt Událost chatu
      */
     @EventHandler
     private void onPlayerMessage(AsyncPlayerChatEvent evt) {
@@ -63,7 +63,7 @@ public class Events implements Listener {
      * Pokud se hráč odpojí ze hry, je mu automaticky rušen AFK status i
      * počítadlo nečinnosti.
      *
-     * @param evt {org.bukkit.event.player.PlayerQuitEvent} Událost odpojení
+     * @param evt Událost odpojení
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onPlayerQuit(PlayerQuitEvent evt) {
@@ -78,7 +78,7 @@ public class Events implements Listener {
      * Pokud se hráč připojí ke hře, nastavuje se mu automaticky počítadlo
      * nečinnosti.
      *
-     * @param evt {org.bukkit.event.player.PlayerJoinEvent} Událost připojení
+     * @param evt Událost připojení
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onPlayerJoin(PlayerJoinEvent evt) {

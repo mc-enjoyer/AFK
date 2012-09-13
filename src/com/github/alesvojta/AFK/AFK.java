@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.0.3
+ * @version 3.0.4
  */
 public class AFK extends JavaPlugin {
 
@@ -21,7 +21,7 @@ public class AFK extends JavaPlugin {
      */
     public HashMap<Player, String> afkPlayerMap;
     /**
-     * Instance konfigurace, vrací data z configu.
+     * Instance konfigurace. Vrací data z configu.
      */
     public Config cfg;
     private HashMap<Player, Calendar> afkTimeMap;
@@ -47,10 +47,9 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Nastaví hráči AFK status. Jméno delší než 14 znaků způsobuje vyjímku,
-     * prozatím ošetřeno zkrácením jména.
+     * Nastaví hráči AFK status.
      *
-     * @param player {org.bukkit.entity.Player} Hráč, který jde AFK
+     * @param player Hráč, který jde AFK
      */
     public void becomeAFK(Player player) {
         afkPlayerMap.put(player, player.getPlayerListName());
@@ -69,12 +68,12 @@ public class AFK extends JavaPlugin {
             }
         }
 
-        /**
+        /*
          * Pokud je jméno hráče delší než 14 znaků, je mu jméno v PlayerListu
          * (klávesa TAB) zkráceno o 2 znaky kvůli barevné značce, kterou
          * používám k označení AFK statusu.
          *
-         * @param tempName {String} Dočasné jméno hráče po úpravě
+         * @param tempName Dočasné jméno hráče po zkrácení
          */
         if (player.getName().length() > 14) {
             String tempName = player.getName().substring(0, 13);
@@ -89,9 +88,9 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Hráči, který má AFK příznak ruší AFK status.
+     * Ruší hráči AFK status.
      *
-     * @param player {org.bukkit.entity.Player} Hráč, který se vrátil ke hře
+     * @param player Hráč, který se vrátil ke hře
      */
     public void cancelAFK(Player player) {
         if (cfg.serverMessages()) {
@@ -118,7 +117,7 @@ public class AFK extends JavaPlugin {
     /**
      * Vrací čas, po který byl hráč AFK.
      *
-     * @param player {org.bukkit.entity.Player} Hráč, který se vrátil ke hře
+     * @param player Hráč, který se vrátil ke hře
      * @return {String} Doba AFK
      */
     private String returnPlayerAfkTime(Player player) {
@@ -160,11 +159,11 @@ public class AFK extends JavaPlugin {
     /**
      * Ovladač příkazu '/afk'.
      *
-     * @param sender {CommandSender} Odesílatel příkazu
-     * @param cmd {Command} Příkaz
-     * @param label {String} Alias příkazu
-     * @param args {String[]} Další parametry příkazu
-     * @return {boolean} Splněno - ano/ne
+     * @param sender Odesílatel příkazu
+     * @param cmd Příkaz
+     * @param label Alias příkazu
+     * @param args Další parametry příkazu
+     * @return {boolean}
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

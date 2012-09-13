@@ -1,6 +1,6 @@
 name: AFK
 main: com.github.alesvojta.AFK.AFK
-version: 3.0.3
+version: 3.0.4
 author: Aleš Vojta / schneckk
 description: Provides AFK messages
 website: http://dev.bukkit.org/server-mods/afk/

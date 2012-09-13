@@ -12,7 +12,7 @@ public class Config {
     /**
      * Konstruktor vytvoří konfigurační soubory.
      *
-     * @param plugin {com.github.alesvojta.AFK.AFK} Plugin
+     * @param plugin Plugin
      */
     public Config(AFK plugin) {
         this.cfg = plugin.getConfig();
@@ -21,81 +21,81 @@ public class Config {
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Událost pohybu.
      *
-     * @return {boolean} Při události pohybu
+     * @return {Boolean}
      */
     public boolean onPlayerMove() {
         return cfg.getBoolean("onPlayerMove");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Událost chatu.
      *
-     * @return {boolean} Při události chatu
+     * @return {Boolean}
      */
     public boolean onPlayerMessage() {
         return cfg.getBoolean("onPlayerMessage");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Zprávy serveru.
      *
-     * @return {boolean} Zprávy serveru
+     * @return {Boolean}
      */
     public boolean serverMessages() {
         return cfg.getBoolean("serverMessages");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Počítadlo nečinnosti.
      *
-     * @return {boolean} Počítadlo nečinnosti
+     * @return {Boolean}
      */
     public boolean idleTimer() {
         return cfg.getBoolean("idleTimer");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Počet sekund.
      *
-     * @return {Integer} Počet vteřin
+     * @return {Integer}
      */
     public int idleTime() {
         return cfg.getInt("idleTime");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * AFK zpráva. Vypíše zprávu, pokud je hráč AFK.
      *
-     * @return {String} Text +AFK zpráva
+     * @return {String}
      */
     public String toAfk() {
         return cfg.getString("toAfk");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * AFK zpráva. Vypíše zprávu, pokud se hráč vrátí ke hře.
      *
-     * @return {String} Text -AFK zpráva
+     * @return {String}
      */
     public String fromAfk() {
         return cfg.getString("fromAfk");
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Barva jména v seznamu hráčů.
      *
-     * @return {String} Barva jmen v PlayerListu
+     * @return {String}
      */
     public String playerListColor() {
         return cfg.getString("playerColor").toUpperCase();
     }
 
     /**
-     * Vrací hodnotu z konfiguračního souboru.
+     * Barva zpráv serveru.
      *
-     * @return {String} Barva zpráv serveru
+     * @return {String}
      */
     public String serverMessagesColor() {
         return cfg.getString("messageColor").toUpperCase();
