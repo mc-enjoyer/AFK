@@ -1,5 +1,5 @@
 name: AFK
-main: com.github.alesvojta.AFK.AFK
+main: com.github.alesvojta.afk.AFK
 version: 3.0.6
 author: Aleš Vojta / schneckk
 description: Provides AFK messages
