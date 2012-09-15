@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */
