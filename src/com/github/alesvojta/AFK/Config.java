@@ -1,4 +1,4 @@
-package com.github.alesvojta.AFK;
+package com.github.alesvojta.afk;
 
 import org.bukkit.configuration.Configuration;
 
@@ -7,7 +7,7 @@ import org.bukkit.configuration.Configuration;
  */
 public class Config {
 
-    private Configuration cfg;
+    private final Configuration cfg;
 
     /**
      * Konstruktor vytvoří konfigurační soubory.

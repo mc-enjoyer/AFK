@@ -1,7 +1,8 @@
-package com.github.alesvojta.AFK;
+package com.github.alesvojta.afk;
 
 import java.util.Calendar;
 import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,30 +13,29 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.0.4
+ * @version 3.0.6
  */
 public class AFK extends JavaPlugin {
 
     /**
-     * Mapa AFK hráčů.
-     */
-    public HashMap<Player, String> afkPlayerMap;
-    /**
      * Instance konfigurace. Vrací data z configu.
      */
     public Config cfg;
+    /**
+     * Mapa AFK hráčů.
+     */
+    public HashMap<Player, String> afkPlayerMap;
     private HashMap<Player, Calendar> afkTimeMap;
-    private Events events;
 
     /**
      * Funkce se volá při zavádění pluginu.
      */
     @Override
     public void onEnable() {
-        this.afkPlayerMap = new HashMap();
-        this.afkTimeMap = new HashMap();
+        getServer().getPluginManager().registerEvents(new Events(this), this);
+        this.afkPlayerMap = new HashMap<Player, String>();
+        this.afkTimeMap = new HashMap<Player, Calendar>();
         this.cfg = new Config(this);
-        this.events = new Events(this);
     }
 
     /**
@@ -126,21 +126,21 @@ public class AFK extends JavaPlugin {
         String playerAfkTime;
 
         int[] newTimeArray = {
-            newTime.get(Calendar.HOUR),
-            newTime.get(Calendar.MINUTE),
-            newTime.get(Calendar.SECOND)
+                newTime.get(Calendar.HOUR),
+                newTime.get(Calendar.MINUTE),
+                newTime.get(Calendar.SECOND)
         };
 
         int[] oldTimeArray = {
-            oldTime.get(Calendar.HOUR),
-            oldTime.get(Calendar.MINUTE),
-            oldTime.get(Calendar.SECOND)
+                oldTime.get(Calendar.HOUR),
+                oldTime.get(Calendar.MINUTE),
+                oldTime.get(Calendar.SECOND)
         };
 
         int[] afkTimeArray = {
-            newTimeArray[0] - oldTimeArray[0],
-            newTimeArray[1] - oldTimeArray[1],
-            newTimeArray[2] - oldTimeArray[2]
+                newTimeArray[0] - oldTimeArray[0],
+                newTimeArray[1] - oldTimeArray[1],
+                newTimeArray[2] - oldTimeArray[2]
         };
 
         //  0 = HOUR, 1 = MINUTE, 2 = SECOND
@@ -160,9 +160,9 @@ public class AFK extends JavaPlugin {
      * Ovladač příkazu '/afk'.
      *
      * @param sender Odesílatel příkazu
-     * @param cmd Příkaz
-     * @param label Alias příkazu
-     * @param args Další parametry příkazu
+     * @param cmd    Příkaz
+     * @param label  Alias příkazu
+     * @param args   Další parametry příkazu
      * @return {boolean}
      */
     @Override

@@ -1,6 +1,7 @@
-package com.github.alesvojta.AFK;
+package com.github.alesvojta.afk;
 
 import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,11 +14,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */
-public class Events implements Listener {
+class Events implements Listener {
 
-    private Events thiz = this;
-    private AFK plugin;
-    private HashMap<Player, Integer> task;
+    private final AFK plugin;
+    private final HashMap<Player, Integer> task;
 
     /**
      * Konstruktor inicializuje proměnné a zavede registr událostí.
@@ -25,9 +25,8 @@ public class Events implements Listener {
      * @param plugin Plugin
      */
     public Events(AFK plugin) {
-        this.task = new HashMap();
+        this.task = new HashMap<Player, Integer>();
         this.plugin = plugin;
-        this.plugin.getServer().getPluginManager().registerEvents(thiz, plugin);
     }
 
     /**
@@ -69,7 +68,7 @@ public class Events implements Listener {
     private void onPlayerQuit(PlayerQuitEvent evt) {
         plugin.afkPlayerMap.remove(evt.getPlayer());
         if (plugin.cfg.idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask((Integer) task.get(evt.getPlayer()).intValue());
+            plugin.getServer().getScheduler().cancelTask(task.get(evt.getPlayer()));
             task.remove(evt.getPlayer());
         }
     }

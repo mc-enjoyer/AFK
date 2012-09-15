@@ -1,4 +1,4 @@
-package com.github.alesvojta.AFK;
+package com.github.alesvojta.afk;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */
-public class IdleTimer implements Runnable {
+class IdleTimer implements Runnable {
 
-    private Player player;
-    private AFK plugin;
+    private final Player player;
+    private final AFK plugin;
     private Location lastLocation;
 
     /**
