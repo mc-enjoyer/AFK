@@ -2,7 +2,6 @@ package com.github.alesvojta.afk;
 
 import org.bukkit.configuration.Configuration;
 
-
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */

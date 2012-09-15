@@ -3,7 +3,6 @@ package com.github.alesvojta.afk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */

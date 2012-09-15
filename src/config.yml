@@ -2,7 +2,6 @@
 # Idle timer, def true, 60 sec
 # Playerlist/messages color, def gray [black, dark_blue, dark_green, dark_aqua, dark_red, purple, gold, gray, dark_gray, indigo, bright_green, aqua, red, pink, yellow, white]
 # Server AFK messages, def true (fallback message = {DISPLAYNAME} is now/no longer AFK)
-
 onPlayerMove: true
 onPlayerMessage: true
 idleTimer: true
