@@ -1,7 +1,3 @@
-/build/
-/dist/
-/nbproject/
-/manifest.mf
-/logo.psd
-/build.xml
-/logo.png
+/.idea/
+/.git/
+/AFK.iml
