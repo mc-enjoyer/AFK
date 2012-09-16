@@ -2,6 +2,7 @@ package com.github.alesvojta.afk;
 
 import java.util.Calendar;
 import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.0.6
+ * @version 3.1.0
  */
 public class AFK extends JavaPlugin {
 
@@ -24,7 +25,7 @@ public class AFK extends JavaPlugin {
      * Mapa AFK hráčů.
      */
     public HashMap<Player, String> afkPlayerMap;
-    private HashMap<Player, Calendar> afkTimeMap;
+    private HashMap<Player, Long> afkTimeMap;
 
     /**
      * Funkce se volá při zavádění pluginu.
@@ -33,7 +34,7 @@ public class AFK extends JavaPlugin {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(this), this);
         this.afkPlayerMap = new HashMap<Player, String>();
-        this.afkTimeMap = new HashMap<Player, Calendar>();
+        this.afkTimeMap = new HashMap<Player, Long>();
         this.cfg = new Config(this);
     }
 
@@ -52,7 +53,8 @@ public class AFK extends JavaPlugin {
      */
     public void becomeAFK(Player player) {
         afkPlayerMap.put(player, player.getPlayerListName());
-        afkTimeMap.put(player, Calendar.getInstance());
+
+        afkTimeMap.put(player, player.getPlayerTime());
 
         if (cfg.serverMessages()) {
             String afkMessage = cfg.toAfk();
@@ -98,7 +100,7 @@ public class AFK extends JavaPlugin {
             ChatColor color = ChatColor.valueOf(cfg.serverMessagesColor());
 
             if (afkMessage.matches(".*\\{AFKTIME}.*")) {
-                afkMessage = afkMessage.replaceAll("\\{AFKTIME}", returnPlayerAfkTime(player));
+                afkMessage = afkMessage.replaceAll("\\{AFKTIME}", returnAfkTime(player));
             }
 
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
@@ -117,52 +119,27 @@ public class AFK extends JavaPlugin {
      * Vrací čas, po který byl hráč AFK.
      *
      * @param player Hráč, který se vrátil ke hře
-     * @return {String} Doba AFK
+     * @return String
      */
-    private String returnPlayerAfkTime(Player player) {
-        Calendar newTime = Calendar.getInstance();
-        Calendar oldTime = afkTimeMap.get(player);
-        String playerAfkTime;
+    private String returnAfkTime(Player player) {
+        long oldTime = afkTimeMap.get(player);     //  mensi
+        long newTime = player.getPlayerTime();  //  vetsi
 
-        int[] newTimeArray = {
-            newTime.get(Calendar.HOUR),
-            newTime.get(Calendar.MINUTE),
-            newTime.get(Calendar.SECOND)
-        };
+        long minutes = ((newTime - oldTime) / 20) / 60;
+        long seconds = ((newTime - oldTime) / 20) % 60;
 
-        int[] oldTimeArray = {
-            oldTime.get(Calendar.HOUR),
-            oldTime.get(Calendar.MINUTE),
-            oldTime.get(Calendar.SECOND)
-        };
-
-        int[] afkTimeArray = {
-            newTimeArray[0] - oldTimeArray[0],
-            newTimeArray[1] - oldTimeArray[1],
-            newTimeArray[2] - oldTimeArray[2]
-        };
-
-        //  0 = HOUR, 1 = MINUTE, 2 = SECOND
-        if (afkTimeArray[0] < 1 && afkTimeArray[1] < 1) {
-            playerAfkTime = afkTimeArray[2] + "s";
-        } else if (afkTimeArray[0] < 1) {
-            playerAfkTime = afkTimeArray[1] + "m" + afkTimeArray[2] + "s";
-        } else {
-            playerAfkTime = afkTimeArray[0] + "h" + afkTimeArray[1] + "m " + afkTimeArray[2] + "s";
-        }
-
-        afkTimeMap.remove(player);
-        return playerAfkTime;
+        String time = (minutes == 0) ? seconds + "s" : minutes + "m" + seconds + "s";
+        return time;
     }
 
     /**
      * Ovladač příkazu '/afk'.
      *
      * @param sender Odesílatel příkazu
-     * @param cmd Příkaz
-     * @param label Alias příkazu
-     * @param args Další parametry příkazu
-     * @return {boolean}
+     * @param cmd    Příkaz
+     * @param label  Alias příkazu
+     * @param args   Další parametry příkazu
+     * @return boolean
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

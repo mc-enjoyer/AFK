@@ -23,7 +23,7 @@ public class Config {
     /**
      * Událost pohybu.
      *
-     * @return {Boolean}
+     * @return Boolean
      */
     public boolean onPlayerMove() {
         return cfg.getBoolean("onPlayerMove");
@@ -32,7 +32,7 @@ public class Config {
     /**
      * Událost chatu.
      *
-     * @return {Boolean}
+     * @return Boolean
      */
     public boolean onPlayerMessage() {
         return cfg.getBoolean("onPlayerMessage");
@@ -41,7 +41,7 @@ public class Config {
     /**
      * Zprávy serveru.
      *
-     * @return {Boolean}
+     * @return Boolean
      */
     public boolean serverMessages() {
         return cfg.getBoolean("serverMessages");
@@ -50,7 +50,7 @@ public class Config {
     /**
      * Počítadlo nečinnosti.
      *
-     * @return {Boolean}
+     * @return Boolean
      */
     public boolean idleTimer() {
         return cfg.getBoolean("idleTimer");
@@ -59,7 +59,7 @@ public class Config {
     /**
      * Počet sekund.
      *
-     * @return {Integer}
+     * @return Integer
      */
     public int idleTime() {
         return cfg.getInt("idleTime");
@@ -68,7 +68,7 @@ public class Config {
     /**
      * AFK zpráva. Vypíše zprávu, pokud je hráč AFK.
      *
-     * @return {String}
+     * @return String
      */
     public String toAfk() {
         return cfg.getString("toAfk");
@@ -77,7 +77,7 @@ public class Config {
     /**
      * AFK zpráva. Vypíše zprávu, pokud se hráč vrátí ke hře.
      *
-     * @return {String}
+     * @return String
      */
     public String fromAfk() {
         return cfg.getString("fromAfk");
@@ -86,7 +86,7 @@ public class Config {
     /**
      * Barva jména v seznamu hráčů.
      *
-     * @return {String}
+     * @return String
      */
     public String playerListColor() {
         return cfg.getString("playerColor").toUpperCase();
@@ -95,7 +95,7 @@ public class Config {
     /**
      * Barva zpráv serveru.
      *
-     * @return {String}
+     * @return String
      */
     public String serverMessagesColor() {
         return cfg.getString("messageColor").toUpperCase();
