@@ -6,10 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
@@ -32,16 +29,16 @@ class Events implements Listener {
     /**
      * Pokud se hráč pohne o 1 celý blok, je mu zrušen AFK status.
      *
-     * @param evt Událost pohybu
+     * @param event Událost pohybu
      */
     @EventHandler
-    private void onPlayerMove(PlayerMoveEvent evt) {
-        if (plugin.afkPlayerMap.containsKey(evt.getPlayer()) && plugin.cfg.onPlayerMove()) {
-            int movX = evt.getFrom().getBlockX() - evt.getTo().getBlockX();
-            int movZ = evt.getFrom().getBlockZ() - evt.getTo().getBlockZ();
+    private void onPlayerMove(PlayerMoveEvent event) {
+        if (plugin.afkPlayerMap.containsKey(event.getPlayer()) && plugin.cfg.onPlayerMove()) {
+            int movX = event.getFrom().getBlockX() - event.getTo().getBlockX();
+            int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
 
             if (Math.abs(movX) > 0 || Math.abs(movZ) > 0) {
-                plugin.cancelAFK(evt.getPlayer());
+                plugin.cancelAFK(event.getPlayer());
             }
         }
     }
@@ -49,41 +46,52 @@ class Events implements Listener {
     /**
      * Pokud hráč použije chat, je mu zrušen AFK status.
      *
-     * @param evt Událost chatu
+     * @param event Událost chatu
      */
     @EventHandler
-    private void onPlayerMessage(AsyncPlayerChatEvent evt) {
-        if (plugin.afkPlayerMap.containsKey(evt.getPlayer()) && plugin.cfg.onPlayerMessage()) {
-            plugin.cancelAFK(evt.getPlayer());
+    private void onPlayerMessage(AsyncPlayerChatEvent event) {
+        if (plugin.afkPlayerMap.containsKey(event.getPlayer()) && plugin.cfg.onPlayerMessage()) {
+            plugin.cancelAFK(event.getPlayer());
         }
     }
 
     /**
-     * Pokud se hráč odpojí ze hry, je mu automaticky rušen AFK status i
-     * počítadlo nečinnosti.
+     * Pokud se hráč odpojí ze hry, je mu automaticky rušen AFK status, případně i počítadlo nečinnosti.
      *
-     * @param evt Událost odpojení
+     * @param event Událost odpojení
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
-    private void onPlayerQuit(PlayerQuitEvent evt) {
-        plugin.afkPlayerMap.remove(evt.getPlayer());
+    @EventHandler
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        plugin.afkPlayerMap.remove(event.getPlayer());
         if (plugin.cfg.idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask(task.get(evt.getPlayer()));
-            task.remove(evt.getPlayer());
+            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer()));
+            task.remove(event.getPlayer());
         }
     }
 
     /**
-     * Pokud se hráč připojí ke hře, nastavuje se mu automaticky počítadlo
-     * nečinnosti.
+     * Pokud je hráč vykopnut ze hry, je mu automaticky rušen  AFK status, případně i počítadlo nečinnosti.
      *
-     * @param evt Událost připojení
+     * @param event Událost vykopnutí
+     */
+    @EventHandler
+    private void onPlayerKicked(PlayerKickEvent event) {
+        plugin.afkPlayerMap.remove(event.getPlayer());
+        if (plugin.cfg.idleTimer()) {
+            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer()));
+        }
+    }
+
+    /**
+     * Pokud se hráč připojí ke hře, nastavuje se mu automaticky počítadlo nečinnosti.
+     *
+     * @param event Událost připojení
      */
     @EventHandler(priority = EventPriority.HIGHEST)
-    private void onPlayerJoin(PlayerJoinEvent evt) {
+    private void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.cfg.idleTimer()) {
-            int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(evt.getPlayer(), plugin), 20L * plugin.cfg.idleTime(), 20L * plugin.cfg.idleTime());
-            task.put(evt.getPlayer(), id);
+            int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(event.getPlayer(), plugin), 20L * plugin.cfg.idleTime(), 20L * plugin.cfg.idleTime());
+            task.put(event.getPlayer(), id);
         }
     }
 }

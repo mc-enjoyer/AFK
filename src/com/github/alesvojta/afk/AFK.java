@@ -1,6 +1,5 @@
 package com.github.alesvojta.afk;
 
-import java.util.Calendar;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -13,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.1.0
+ * @version 3.2.0
  */
 public class AFK extends JavaPlugin {
 
