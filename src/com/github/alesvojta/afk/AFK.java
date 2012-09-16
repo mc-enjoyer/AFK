@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  * bukkit-1.3.2-R0, JRE 7
  *
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version 3.2.0
  */
 public class AFK extends JavaPlugin {
 
@@ -42,7 +41,6 @@ public class AFK extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        this.getLogger().info("Thank you for choosing AFK plugin!");
     }
 
     /**
@@ -94,7 +92,7 @@ public class AFK extends JavaPlugin {
      */
     public void cancelAFK(Player player) {
         if (cfg.serverMessages()) {
-            String afkMessage = cfg.fromAfk();
+            String afkMessage = cfg.noAfk();
             String fallbackMessage = player.getName() + " is no longer AFK";
             ChatColor color = ChatColor.valueOf(cfg.serverMessagesColor());
 
@@ -121,13 +119,15 @@ public class AFK extends JavaPlugin {
      * @return String
      */
     private String returnAfkTime(Player player) {
-        long oldTime = afkTimeMap.get(player);     //  mensi
-        long newTime = player.getPlayerTime();  //  vetsi
+        long oldTime = afkTimeMap.get(player);
+        long newTime = player.getPlayerTime();
 
         long minutes = ((newTime - oldTime) / 20) / 60;
         long seconds = ((newTime - oldTime) / 20) % 60;
 
         String time = (minutes == 0) ? seconds + "s" : minutes + "m" + seconds + "s";
+
+        afkTimeMap.remove(player);
         return time;
     }
 
@@ -142,21 +142,17 @@ public class AFK extends JavaPlugin {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player;
-
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        } else {
+        if (!(sender instanceof Player)) {
             this.getLogger().info("This command can only be run by a player!");
             return true;
         }
 
         if (cmd.getName().equalsIgnoreCase("afk")) {
-            if (afkPlayerMap.containsKey(player)) {
-                cancelAFK(player);
+            if (afkPlayerMap.containsKey(sender)) {
+                cancelAFK((Player) sender);
                 return true;
             } else {
-                becomeAFK(player);
+                becomeAFK((Player) sender);
                 return true;
             }
         }

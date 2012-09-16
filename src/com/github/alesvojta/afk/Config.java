@@ -26,7 +26,7 @@ public class Config {
      * @return Boolean
      */
     public boolean onPlayerMove() {
-        return cfg.getBoolean("onPlayerMove");
+        return cfg.getBoolean("Events.move");
     }
 
     /**
@@ -35,61 +35,7 @@ public class Config {
      * @return Boolean
      */
     public boolean onPlayerMessage() {
-        return cfg.getBoolean("onPlayerMessage");
-    }
-
-    /**
-     * Zprávy serveru.
-     *
-     * @return Boolean
-     */
-    public boolean serverMessages() {
-        return cfg.getBoolean("serverMessages");
-    }
-
-    /**
-     * Počítadlo nečinnosti.
-     *
-     * @return Boolean
-     */
-    public boolean idleTimer() {
-        return cfg.getBoolean("idleTimer");
-    }
-
-    /**
-     * Počet sekund.
-     *
-     * @return Integer
-     */
-    public int idleTime() {
-        return cfg.getInt("idleTime");
-    }
-
-    /**
-     * AFK zpráva. Vypíše zprávu, pokud je hráč AFK.
-     *
-     * @return String
-     */
-    public String toAfk() {
-        return cfg.getString("toAfk");
-    }
-
-    /**
-     * AFK zpráva. Vypíše zprávu, pokud se hráč vrátí ke hře.
-     *
-     * @return String
-     */
-    public String fromAfk() {
-        return cfg.getString("fromAfk");
-    }
-
-    /**
-     * Barva jména v seznamu hráčů.
-     *
-     * @return String
-     */
-    public String playerListColor() {
-        return cfg.getString("playerColor").toUpperCase();
+        return cfg.getBoolean("Events.chat");
     }
 
     /**
@@ -98,6 +44,60 @@ public class Config {
      * @return String
      */
     public String serverMessagesColor() {
-        return cfg.getString("messageColor").toUpperCase();
+        return cfg.getString("Colors.message").toUpperCase();
+    }
+
+    /**
+     * Barva jména v seznamu hráčů.
+     *
+     * @return String
+     */
+    public String playerListColor() {
+        return cfg.getString("Colors.player").toUpperCase();
+    }
+
+    /**
+     * Počítadlo nečinnosti.
+     *
+     * @return Boolean
+     */
+    public boolean idleTimer() {
+        return cfg.getBoolean("IdleTimer.enabled");
+    }
+
+    /**
+     * Počet sekund.
+     *
+     * @return Integer
+     */
+    public int idleTime() {
+        return cfg.getInt("IdleTimer.period");
+    }
+
+    /**
+     * Zprávy serveru.
+     *
+     * @return Boolean
+     */
+    public boolean serverMessages() {
+        return cfg.getBoolean("Messages.enabled");
+    }
+
+    /**
+     * AFK zpráva. Vypíše zprávu, pokud je hráč AFK.
+     *
+     * @return String
+     */
+    public String toAfk() {
+        return cfg.getString("Messages.+afk");
+    }
+
+    /**
+     * AFK zpráva. Vypíše zprávu, pokud se hráč vrátí ke hře.
+     *
+     * @return String
+     */
+    public String noAfk() {
+        return cfg.getString("Messages.-afk");
     }
 }
