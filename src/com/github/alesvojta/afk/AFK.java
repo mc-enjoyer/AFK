@@ -37,9 +37,9 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Sets the PLayer AFK.
+     * Sets PLayer AFK.
      *
-     * @param player Hráč, který jde AFK
+     * @param player Player
      */
     public void becomeAFK(Player player) {
         afkPlayerMap.put(player, player.getPlayerListName());
@@ -59,9 +59,9 @@ public class AFK extends JavaPlugin {
         }
 
         /*
-         * If is Players name longer than 14 chars cuts the name about 2 chars (color tag).
+         * If is Players name longer than 14 chars, it cuts the name about 2 chars (color tag).
          *
-         * @param tempName Temporary name of the Player after conversion
+         * @param tempName Temporary name of Player after conversion
          */
         if (player.getName().length() > 14) {
             String tempName = player.getName().substring(0, 13);
@@ -76,7 +76,7 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Removes AFK status from the Player.
+     * Removes AFK status from Player.
      *
      * @param player Player
      */
