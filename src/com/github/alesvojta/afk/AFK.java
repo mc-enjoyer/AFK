@@ -9,25 +9,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * bukkit-1.3.2-R0, JRE 7
- *
  * @author Aleš Vojta (https://github.com/alesvojta)
+ * @version bukkit-1.3.2-R0, JRE 7
  */
 public class AFK extends JavaPlugin {
 
     /**
-     * Instance konfigurace. Vrací data z configu.
+     * Configuration instance.
      */
     public Config cfg;
     /**
-     * Mapa AFK hráčů.
+     * AFK Players map.
      */
     public HashMap<Player, String> afkPlayerMap;
     private HashMap<Player, Long> afkTimeMap;
 
-    /**
-     * Funkce se volá při zavádění pluginu.
-     */
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(this), this);
@@ -36,21 +32,17 @@ public class AFK extends JavaPlugin {
         this.cfg = new Config(this);
     }
 
-    /**
-     * Funkce se volá při deaktivaci pluginu.
-     */
     @Override
     public void onDisable() {
     }
 
     /**
-     * Nastaví hráči AFK status.
+     * Sets the PLayer AFK.
      *
      * @param player Hráč, který jde AFK
      */
     public void becomeAFK(Player player) {
         afkPlayerMap.put(player, player.getPlayerListName());
-
         afkTimeMap.put(player, player.getPlayerTime());
 
         if (cfg.serverMessages()) {
@@ -67,11 +59,9 @@ public class AFK extends JavaPlugin {
         }
 
         /*
-         * Pokud je jméno hráče delší než 14 znaků, je mu jméno v PlayerListu
-         * (klávesa TAB) zkráceno o 2 znaky kvůli barevné značce, kterou
-         * používám k označení AFK statusu.
+         * If is Players name longer than 14 chars cuts the name about 2 chars (color tag).
          *
-         * @param tempName Dočasné jméno hráče po zkrácení
+         * @param tempName Temporary name of the Player after conversion
          */
         if (player.getName().length() > 14) {
             String tempName = player.getName().substring(0, 13);
@@ -86,9 +76,9 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Ruší hráči AFK status.
+     * Removes AFK status from the Player.
      *
-     * @param player Hráč, který se vrátil ke hře
+     * @param player Player
      */
     public void cancelAFK(Player player) {
         if (cfg.serverMessages()) {
@@ -113,9 +103,9 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Vrací čas, po který byl hráč AFK.
+     * Returns Players AFK time.
      *
-     * @param player Hráč, který se vrátil ke hře
+     * @param player Player
      * @return String
      */
     private String returnAfkTime(Player player) {
@@ -132,12 +122,12 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Ovladač příkazu '/afk'.
+     * '/afk' command controller.
      *
-     * @param sender Odesílatel příkazu
-     * @param cmd    Příkaz
-     * @param label  Alias příkazu
-     * @param args   Další parametry příkazu
+     * @param sender Command sender
+     * @param cmd    Command
+     * @param label  Command alias
+     * @param args   Other params
      * @return boolean
      */
     @Override

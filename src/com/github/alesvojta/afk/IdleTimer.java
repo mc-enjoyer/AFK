@@ -13,11 +13,11 @@ class IdleTimer implements Runnable {
     private Location lastLocation;
 
     /**
-     * Kostruktor inicializuje proměnné a volá metodu updatePlayer(), která
-     * aktualizuje hráčovu pozici.
+     * Constructor initialize variables.
+     * It calls updatePlayer() which updates Players location.
      *
-     * @param player Hráč
-     * @param plugin Plugin
+     * @param player Player
+     * @param plugin AFK Plugin
      */
     public IdleTimer(Player player, AFK plugin) {
         this.player = player;
@@ -26,8 +26,7 @@ class IdleTimer implements Runnable {
     }
 
     /**
-     * Pokud hráč stojí na jednom místě po určenou dobu (config/idleTime)
-     * nastaví se mu AFK status.
+     * If Player stands on one place for specified amount of time, it sets the player AFK.
      */
     @Override
     public void run() {
@@ -39,7 +38,7 @@ class IdleTimer implements Runnable {
     }
 
     /**
-     * Aktualizuje hráčovu pozici.
+     * Updates Players location.
      */
     private void updatePlayer() {
         lastLocation = player.getLocation();

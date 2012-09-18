@@ -10,7 +10,7 @@ public class Config {
     private final Configuration cfg;
 
     /**
-     * Konstruktor vytvoří konfigurační soubory.
+     * Constructor initializes variables and saves the config file.
      *
      * @param plugin Plugin
      */
@@ -21,7 +21,7 @@ public class Config {
     }
 
     /**
-     * Událost pohybu.
+     * Move event.
      *
      * @return Boolean
      */
@@ -30,7 +30,7 @@ public class Config {
     }
 
     /**
-     * Událost chatu.
+     * Chat event.
      *
      * @return Boolean
      */
@@ -39,7 +39,7 @@ public class Config {
     }
 
     /**
-     * Barva zpráv serveru.
+     * Server messages color.
      *
      * @return String
      */
@@ -48,7 +48,7 @@ public class Config {
     }
 
     /**
-     * Barva jména v seznamu hráčů.
+     * Player List AFK name color.
      *
      * @return String
      */
@@ -57,7 +57,7 @@ public class Config {
     }
 
     /**
-     * Počítadlo nečinnosti.
+     * Idle Timer.
      *
      * @return Boolean
      */
@@ -66,7 +66,7 @@ public class Config {
     }
 
     /**
-     * Počet sekund.
+     * Number of seconds.
      *
      * @return Integer
      */
@@ -75,7 +75,7 @@ public class Config {
     }
 
     /**
-     * Zprávy serveru.
+     * Server messages.
      *
      * @return Boolean
      */
@@ -84,7 +84,7 @@ public class Config {
     }
 
     /**
-     * AFK zpráva. Vypíše zprávu, pokud je hráč AFK.
+     * AFK message. When the Player become AFK.
      *
      * @return String
      */
@@ -93,7 +93,7 @@ public class Config {
     }
 
     /**
-     * AFK zpráva. Vypíše zprávu, pokud se hráč vrátí ke hře.
+     * AFK message. When the Player cancel AFK.
      *
      * @return String
      */

@@ -17,7 +17,7 @@ class Events implements Listener {
     private final HashMap<Player, Integer> task;
 
     /**
-     * Konstruktor inicializuje proměnné a zavede registr událostí.
+     * Constructor initializes variables.
      *
      * @param plugin Plugin
      */
@@ -27,9 +27,9 @@ class Events implements Listener {
     }
 
     /**
-     * Pokud se hráč pohne o 1 celý blok, je mu zrušen AFK status.
+     * When Player moves about 1 block is his AFK status canceled.
      *
-     * @param event Událost pohybu
+     * @param event Player move event
      */
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent event) {
@@ -44,9 +44,9 @@ class Events implements Listener {
     }
 
     /**
-     * Pokud hráč použije chat, je mu zrušen AFK status.
+     * When Player uses chat is his AFK status canceled.
      *
-     * @param event Událost chatu
+     * @param event Player chat event
      */
     @EventHandler
     private void onPlayerMessage(AsyncPlayerChatEvent event) {
@@ -56,9 +56,9 @@ class Events implements Listener {
     }
 
     /**
-     * Pokud se hráč odpojí ze hry, je mu automaticky rušen AFK status, případně i počítadlo nečinnosti.
+     * when Player logs out is his AFK status (possibly Idle Timer) canceled.
      *
-     * @param event Událost odpojení
+     * @param event Player quit event
      */
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
@@ -70,7 +70,7 @@ class Events implements Listener {
     }
 
     /**
-     * Pokud je hráč vykopnut ze hry, je mu automaticky rušen  AFK status, případně i počítadlo nečinnosti.
+     * when is Player kicked is his AFK status (possibly Idle Timer) canceled.
      *
      * @param event Událost vykopnutí
      */
@@ -83,7 +83,7 @@ class Events implements Listener {
     }
 
     /**
-     * Pokud se hráč připojí ke hře, nastavuje se mu automaticky počítadlo nečinnosti.
+     * When Player logs in, it automatically sets Idle Timer.
      *
      * @param event Událost připojení
      */
