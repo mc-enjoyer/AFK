@@ -19,7 +19,7 @@ class IdleTimer implements Runnable {
      * @param player Player
      * @param plugin AFK Plugin
      */
-    public IdleTimer(Player player, AFK plugin) {
+    IdleTimer(Player player, AFK plugin) {
         this.player = player;
         this.plugin = plugin;
         updatePlayer();
@@ -30,7 +30,7 @@ class IdleTimer implements Runnable {
      */
     @Override
     public void run() {
-        if (player.getLocation().equals(lastLocation) && !plugin.afkPlayerMap.containsKey(player)) {
+        if (player.getLocation().equals(lastLocation) && !plugin.getAfkMap().containsKey(player.getName())) {
             plugin.becomeAFK(player);
             return;
         }

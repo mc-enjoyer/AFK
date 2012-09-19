@@ -1,12 +1,11 @@
 package com.github.alesvojta.afk;
 
-import java.util.HashMap;
-
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
+
+import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
@@ -14,15 +13,15 @@ import org.bukkit.event.player.*;
 class Events implements Listener {
 
     private final AFK plugin;
-    private final HashMap<Player, Integer> task;
+    private final HashMap<String, Integer> task;
 
     /**
      * Constructor initializes variables.
      *
      * @param plugin Plugin
      */
-    public Events(AFK plugin) {
-        this.task = new HashMap<Player, Integer>();
+    Events(AFK plugin) {
+        this.task = new HashMap<String, Integer>();
         this.plugin = plugin;
     }
 
@@ -33,7 +32,7 @@ class Events implements Listener {
      */
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent event) {
-        if (plugin.afkPlayerMap.containsKey(event.getPlayer()) && plugin.cfg.onPlayerMove()) {
+        if (plugin.getAfkMap().containsKey(event.getPlayer().getName()) && plugin.getCfg().onPlayerMove()) {
             int movX = event.getFrom().getBlockX() - event.getTo().getBlockX();
             int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
 
@@ -50,7 +49,7 @@ class Events implements Listener {
      */
     @EventHandler
     private void onPlayerMessage(AsyncPlayerChatEvent event) {
-        if (plugin.afkPlayerMap.containsKey(event.getPlayer()) && plugin.cfg.onPlayerMessage()) {
+        if (plugin.getAfkMap().containsKey(event.getPlayer().getName()) && plugin.getCfg().onPlayerMessage()) {
             plugin.cancelAFK(event.getPlayer());
         }
     }
@@ -62,36 +61,36 @@ class Events implements Listener {
      */
     @EventHandler
     private void onPlayerQuit(PlayerQuitEvent event) {
-        plugin.afkPlayerMap.remove(event.getPlayer());
-        if (plugin.cfg.idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer()));
-            task.remove(event.getPlayer());
+        plugin.getAfkMap().remove(event.getPlayer().getName());
+        if (plugin.getCfg().idleTimer()) {
+            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
+            task.remove(event.getPlayer().getName());
         }
     }
 
     /**
      * when is Player kicked is his AFK status (possibly Idle Timer) canceled.
      *
-     * @param event Událost vykopnutí
+     * @param event Player kick event
      */
     @EventHandler
     private void onPlayerKicked(PlayerKickEvent event) {
-        plugin.afkPlayerMap.remove(event.getPlayer());
-        if (plugin.cfg.idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer()));
+        plugin.getAfkMap().remove(event.getPlayer().getName());
+        if (plugin.getCfg().idleTimer()) {
+            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
         }
     }
 
     /**
      * When Player logs in, it automatically sets Idle Timer.
      *
-     * @param event Událost připojení
+     * @param event Player join event
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onPlayerJoin(PlayerJoinEvent event) {
-        if (plugin.cfg.idleTimer()) {
-            int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(event.getPlayer(), plugin), 20L * plugin.cfg.idleTime(), 20L * plugin.cfg.idleTime());
-            task.put(event.getPlayer(), id);
+        if (plugin.getCfg().idleTimer()) {
+            int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(event.getPlayer(), plugin), 20L * plugin.getCfg().idleTime(), 20L * plugin.getCfg().idleTime());
+            task.put(event.getPlayer().getName(), id);
         }
     }
 }

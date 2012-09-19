@@ -5,7 +5,7 @@ import org.bukkit.configuration.Configuration;
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */
-public class Config {
+class Config {
 
     private final Configuration cfg;
 
@@ -14,7 +14,7 @@ public class Config {
      *
      * @param plugin Plugin
      */
-    public Config(AFK plugin) {
+    Config(AFK plugin) {
         this.cfg = plugin.getConfig();
         cfg.options().copyDefaults(true);
         plugin.saveConfig();

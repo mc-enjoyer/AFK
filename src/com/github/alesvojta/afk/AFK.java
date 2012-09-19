@@ -1,12 +1,12 @@
 package com.github.alesvojta.afk;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
@@ -14,26 +14,35 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class AFK extends JavaPlugin {
 
-    /**
-     * Configuration instance.
-     */
-    public Config cfg;
-    /**
-     * AFK Players map.
-     */
-    public HashMap<Player, String> afkPlayerMap;
-    private HashMap<Player, Long> afkTimeMap;
+    private HashMap<String, String> afkPlayerMap;
+    private HashMap<String, Long> afkTimeMap;
+    private Config cfg;
+
+    public HashMap<String, String> getAfkMap() {
+        return this.afkPlayerMap;
+    }
+
+    public HashMap<String, Long> getTimeMap() {
+        return this.afkTimeMap;
+    }
+
+    public Config getCfg() {
+        return this.cfg;
+    }
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new Events(this), this);
-        this.afkPlayerMap = new HashMap<Player, String>();
-        this.afkTimeMap = new HashMap<Player, Long>();
+        this.afkPlayerMap = new HashMap<String, String>();
+        this.afkTimeMap = new HashMap<String, Long>();
         this.cfg = new Config(this);
     }
 
     @Override
     public void onDisable() {
+        this.afkPlayerMap.clear();
+        this.afkTimeMap.clear();
+        this.cfg = null;
     }
 
     /**
@@ -42,13 +51,13 @@ public class AFK extends JavaPlugin {
      * @param player Player
      */
     public void becomeAFK(Player player) {
-        afkPlayerMap.put(player, player.getPlayerListName());
-        afkTimeMap.put(player, player.getPlayerTime());
+        getAfkMap().put(player.getName(), player.getPlayerListName());
+        getTimeMap().put(player.getName(), player.getPlayerTime());
 
-        if (cfg.serverMessages()) {
-            String afkMessage = cfg.toAfk();
+        if (getCfg().serverMessages()) {
+            String afkMessage = getCfg().toAfk();
             String fallbackMessage = player.getName() + " is now AFK";
-            ChatColor color = ChatColor.valueOf(cfg.serverMessagesColor());
+            ChatColor color = ChatColor.valueOf(getCfg().serverMessagesColor());
 
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", player.getName());
@@ -65,11 +74,11 @@ public class AFK extends JavaPlugin {
          */
         if (player.getName().length() > 14) {
             String tempName = player.getName().substring(0, 13);
-            ChatColor color = ChatColor.valueOf(cfg.playerListColor());
+            ChatColor color = ChatColor.valueOf(getCfg().playerListColor());
 
             player.setPlayerListName(color + tempName);
         } else {
-            ChatColor color = ChatColor.valueOf(cfg.playerListColor());
+            ChatColor color = ChatColor.valueOf(getCfg().playerListColor());
 
             player.setPlayerListName(color + player.getName());
         }
@@ -81,10 +90,10 @@ public class AFK extends JavaPlugin {
      * @param player Player
      */
     public void cancelAFK(Player player) {
-        if (cfg.serverMessages()) {
-            String afkMessage = cfg.noAfk();
+        if (getCfg().serverMessages()) {
+            String afkMessage = getCfg().noAfk();
             String fallbackMessage = player.getName() + " is no longer AFK";
-            ChatColor color = ChatColor.valueOf(cfg.serverMessagesColor());
+            ChatColor color = ChatColor.valueOf(getCfg().serverMessagesColor());
 
             if (afkMessage.matches(".*\\{AFKTIME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{AFKTIME}", returnAfkTime(player));
@@ -98,8 +107,8 @@ public class AFK extends JavaPlugin {
             }
         }
 
-        player.setPlayerListName(afkPlayerMap.get(player));
-        afkPlayerMap.remove(player);
+        player.setPlayerListName(getAfkMap().get(player.getName()));
+        getAfkMap().remove(player.getName());
     }
 
     /**
@@ -109,7 +118,7 @@ public class AFK extends JavaPlugin {
      * @return String
      */
     private String returnAfkTime(Player player) {
-        long oldTime = afkTimeMap.get(player);
+        long oldTime = getTimeMap().get(player.getName());
         long newTime = player.getPlayerTime();
 
         long minutes = ((newTime - oldTime) / 20) / 60;
@@ -117,7 +126,7 @@ public class AFK extends JavaPlugin {
 
         String time = (minutes == 0) ? seconds + "s" : minutes + "m" + seconds + "s";
 
-        afkTimeMap.remove(player);
+        getTimeMap().remove(player.getName());
         return time;
     }
 
@@ -138,7 +147,7 @@ public class AFK extends JavaPlugin {
         }
 
         if (cmd.getName().equalsIgnoreCase("afk")) {
-            if (afkPlayerMap.containsKey(sender)) {
+            if (getAfkMap().containsKey(sender.getName())) {
                 cancelAFK((Player) sender);
                 return true;
             } else {
