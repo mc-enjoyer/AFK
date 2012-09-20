@@ -76,6 +76,16 @@ public class AFK extends JavaPlugin {
     }
 
     /**
+     * Puts PLayer to afkTimeMap.
+     *
+     * @param player
+     */
+    static void putPlayerToTimeMap(Player player) {
+        afkTimeMap.put(player.getName(), player.getPlayerTime());
+        player.resetPlayerTime();
+    }
+
+    /**
      * Removes player from afkTimeMap.
      *
      * @param player PLayer
@@ -105,8 +115,7 @@ public class AFK extends JavaPlugin {
      */
     void becomeAFK(Player player) {
         putPlayerToAfkMap(player);
-        afkTimeMap.put(player.getName(), player.getPlayerTime());
-        player.resetPlayerTime();
+        putPlayerToTimeMap(player);
 
         if (getCfg().serverMessages()) {
             String afkMessage = getCfg().toAfk();

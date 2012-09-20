@@ -13,7 +13,7 @@ import java.util.HashMap;
 class Events implements Listener {
 
     private final AFK plugin;
-    private final HashMap<String, Integer> task;
+    private final HashMap<String, Integer> taskMap;
 
     /**
      * Constructor initializes variables.
@@ -21,8 +21,37 @@ class Events implements Listener {
      * @param plugin Plugin
      */
     Events(AFK plugin) {
-        this.task = new HashMap<String, Integer>();
+        this.taskMap = new HashMap<String, Integer>();
         this.plugin = plugin;
+    }
+
+    /**
+     * Adds new Idle Timer to taskMap.
+     *
+     * @param event Player Event
+     * @param id    Id
+     */
+    private void addTask(PlayerEvent event, int id) {
+        this.taskMap.put(event.getPlayer().getName(), id);
+    }
+
+    /**
+     * Removes Player from taskMap.
+     *
+     * @param event Player Event
+     */
+    private void removePlayer(PlayerEvent event) {
+        this.taskMap.remove(event.getPlayer().getName());
+    }
+
+    /**
+     * Returns Task ID.
+     *
+     * @param event Player Event
+     * @return Integer
+     */
+    private int getTaskId(PlayerEvent event) {
+        return this.taskMap.get(event.getPlayer().getName());
     }
 
     /**
@@ -64,8 +93,8 @@ class Events implements Listener {
         AFK.removePlayerFromAfkMap(event.getPlayer());
         AFK.removePlayerFromTimeMap(event.getPlayer());
         if (plugin.getCfg().idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
-            task.remove(event.getPlayer().getName());
+            plugin.getServer().getScheduler().cancelTask(getTaskId(event));
+            removePlayer(event);
         }
     }
 
@@ -79,7 +108,8 @@ class Events implements Listener {
         AFK.removePlayerFromAfkMap(event.getPlayer());
         AFK.removePlayerFromTimeMap(event.getPlayer());
         if (plugin.getCfg().idleTimer()) {
-            plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
+            plugin.getServer().getScheduler().cancelTask(getTaskId(event));
+            removePlayer(event);
         }
     }
 
@@ -92,7 +122,7 @@ class Events implements Listener {
     private void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.getCfg().idleTimer()) {
             int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(event.getPlayer(), plugin), 20L * plugin.getCfg().idleTime(), 20L * plugin.getCfg().idleTime());
-            task.put(event.getPlayer().getName(), id);
+            addTask(event, id);
         }
     }
 }
