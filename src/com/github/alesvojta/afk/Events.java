@@ -30,9 +30,9 @@ class Events implements Listener {
      *
      * @param event Player move event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerMove(PlayerMoveEvent event) {
-        if (plugin.getAfkMap().containsKey(event.getPlayer().getName()) && plugin.getCfg().onPlayerMove()) {
+        if (AFK.isPlayerAfk(event.getPlayer()) && plugin.getCfg().onPlayerMove()) {
             int movX = event.getFrom().getBlockX() - event.getTo().getBlockX();
             int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
 
@@ -47,9 +47,9 @@ class Events implements Listener {
      *
      * @param event Player chat event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerMessage(AsyncPlayerChatEvent event) {
-        if (plugin.getAfkMap().containsKey(event.getPlayer().getName()) && plugin.getCfg().onPlayerMessage()) {
+        if (AFK.isPlayerAfk(event.getPlayer()) && plugin.getCfg().onPlayerMessage()) {
             plugin.cancelAFK(event.getPlayer());
         }
     }
@@ -59,9 +59,10 @@ class Events implements Listener {
      *
      * @param event Player quit event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerQuit(PlayerQuitEvent event) {
-        plugin.getAfkMap().remove(event.getPlayer().getName());
+        AFK.removePlayerFromAfkMap(event.getPlayer());
+        AFK.removePlayerFromTimeMap(event.getPlayer());
         if (plugin.getCfg().idleTimer()) {
             plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
             task.remove(event.getPlayer().getName());
@@ -73,9 +74,10 @@ class Events implements Listener {
      *
      * @param event Player kick event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerKicked(PlayerKickEvent event) {
-        plugin.getAfkMap().remove(event.getPlayer().getName());
+        AFK.removePlayerFromAfkMap(event.getPlayer());
+        AFK.removePlayerFromTimeMap(event.getPlayer());
         if (plugin.getCfg().idleTimer()) {
             plugin.getServer().getScheduler().cancelTask(task.get(event.getPlayer().getName()));
         }
@@ -86,7 +88,7 @@ class Events implements Listener {
      *
      * @param event Player join event
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.getCfg().idleTimer()) {
             int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(event.getPlayer(), plugin), 20L * plugin.getCfg().idleTime(), 20L * plugin.getCfg().idleTime());

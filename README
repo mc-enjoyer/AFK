@@ -2,68 +2,10 @@
 Bukkit plugin for Minecraft.
 http://dev.bukkit.org/server-mods/afk/
 
-Version: 3.2.0	(bukkit-1.3.2-R0.2)
+Version: 3.3.1	(bukkit-1.3.2-R0.2)
 Commands: /afk
 Command sets player AFK. Same command or chat input sets player no-AFK. AFK can be canceled by moving as well.
 
 Message keys:
 {DISPLAYNAME}	Displays player name (ex: schneckk)
 {AFKTIME}	Displays time (ex: 3m15s)
-
-RELEASE HISTORY:
-3.2.0
-	Code optimization
-3.1.0
-	Code optimization
-3.0.1
-	Code optimization
-	Minor config changes
-3.0.0
-	Removed support for JRE6
-	Code optimization
-2.1.0
-	+ {AFKTIME} in messages
-2.0.12
-	Optimized chat event
-	Code documentation (Czech)
-2.0.11
-	+ Hardcoded fallback messages
-	+ {DISPLAYNAME} in messages
-	- Config / Plugin name
-	Minor config changes
-2.0.9
-	+ Config / Plugin name
-	Server messages fix
-	bukkit-1.3.2-R0
-2.0.6
-	+ Config / Server messages color
-	bukkit-1.2.5-R.5
-2.0.5
-	Long name patch
-	IdleTimer bug fix
-	IdleTime increased to 30 seconds
-2.0.2b
-	c/w jre6
-2.0.2
-	Offline AFK bugfix
-2.0.1
-	Code optimalization
-2.0.0
-	+ Config / Idle timer
-	Whole code rewrite (optimalization)
-1.3.1
-	+ Config / PList AFK color
-1.3.0
-	+ Config
-	Code optimalization
-1.2.4
-	Code optimalization
-	Fixed logout in AFK
-1.2.3
-	Code optimalization
-	Fixed player list
-1.2.1
-	Initial release
-1.0.0
-	Never released
-	First working version

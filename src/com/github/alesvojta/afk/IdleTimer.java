@@ -30,7 +30,9 @@ class IdleTimer implements Runnable {
      */
     @Override
     public void run() {
-        if (player.getLocation().equals(lastLocation) && !plugin.getAfkMap().containsKey(player.getName())) {
+        if (player.getLocation().equals(lastLocation) && !AFK.isPlayerAfk(player)) {
+            long idleTime = plugin.getCfg().idleTime() * 20;
+            player.setPlayerTime(-idleTime, true);
             plugin.becomeAFK(player);
             return;
         }
