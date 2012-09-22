@@ -44,7 +44,7 @@ public class AFK extends JavaPlugin {
      * @param player Player
      * @return String
      */
-    static String getAfkPlayerName(Player player) {
+    protected static String getAfkPlayerName(Player player) {
         return afkPlayerMap.get(player.getName());
     }
 
@@ -53,7 +53,7 @@ public class AFK extends JavaPlugin {
      *
      * @return Config
      */
-    Config getCfg() {
+    protected Config getCfg() {
         return this.cfg;
     }
 
@@ -62,7 +62,7 @@ public class AFK extends JavaPlugin {
      *
      * @param player Player
      */
-    static void putPlayerToAfkMap(Player player) {
+    protected static void putPlayerToAfkMap(Player player) {
         afkPlayerMap.put(player.getName(), player.getPlayerListName());
     }
 
@@ -71,16 +71,16 @@ public class AFK extends JavaPlugin {
      *
      * @param player Player
      */
-    static void removePlayerFromAfkMap(Player player) {
+    protected static void removePlayerFromAfkMap(Player player) {
         afkPlayerMap.remove(player.getName());
     }
 
     /**
      * Puts PLayer to afkTimeMap.
      *
-     * @param player
+     * @param player Player
      */
-    static void putPlayerToTimeMap(Player player) {
+    protected static void putPlayerToTimeMap(Player player) {
         afkTimeMap.put(player.getName(), player.getPlayerTime());
         player.resetPlayerTime();
     }
@@ -90,7 +90,7 @@ public class AFK extends JavaPlugin {
      *
      * @param player PLayer
      */
-    static void removePlayerFromTimeMap(Player player) {
+    protected static void removePlayerFromTimeMap(Player player) {
         afkTimeMap.remove(player.getName());
     }
 
@@ -113,7 +113,7 @@ public class AFK extends JavaPlugin {
      *
      * @param player Player
      */
-    void becomeAFK(Player player) {
+    protected void becomeAFK(Player player) {
         putPlayerToAfkMap(player);
         putPlayerToTimeMap(player);
 
@@ -152,7 +152,7 @@ public class AFK extends JavaPlugin {
      *
      * @param player Player
      */
-    void cancelAFK(Player player) {
+    protected void cancelAFK(Player player) {
         if (getCfg().serverMessages()) {
             String afkMessage = getCfg().noAfk();
             String fallbackMessage = player.getName() + " is no longer AFK";

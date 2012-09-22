@@ -14,7 +14,7 @@ class Config {
      *
      * @param plugin Plugin
      */
-    Config(AFK plugin) {
+    protected Config(AFK plugin) {
         this.cfg = plugin.getConfig();
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
@@ -25,7 +25,7 @@ class Config {
      *
      * @return Boolean
      */
-    public boolean onPlayerMove() {
+    protected boolean onPlayerMove() {
         return cfg.getBoolean("Events.move");
     }
 
@@ -34,7 +34,7 @@ class Config {
      *
      * @return Boolean
      */
-    public boolean onPlayerMessage() {
+    protected boolean onPlayerMessage() {
         return cfg.getBoolean("Events.chat");
     }
 
@@ -43,7 +43,7 @@ class Config {
      *
      * @return String
      */
-    public String serverMessagesColor() {
+    protected String serverMessagesColor() {
         return cfg.getString("Colors.message").toUpperCase();
     }
 
@@ -52,7 +52,7 @@ class Config {
      *
      * @return String
      */
-    public String playerListColor() {
+    protected String playerListColor() {
         return cfg.getString("Colors.player").toUpperCase();
     }
 
@@ -61,7 +61,7 @@ class Config {
      *
      * @return Boolean
      */
-    public boolean idleTimer() {
+    protected boolean idleTimer() {
         return cfg.getBoolean("IdleTimer.enabled");
     }
 
@@ -70,7 +70,7 @@ class Config {
      *
      * @return Integer
      */
-    public int idleTime() {
+    protected int idleTime() {
         return cfg.getInt("IdleTimer.period");
     }
 
@@ -79,7 +79,7 @@ class Config {
      *
      * @return Boolean
      */
-    public boolean serverMessages() {
+    protected boolean serverMessages() {
         return cfg.getBoolean("Messages.enabled");
     }
 
@@ -88,7 +88,7 @@ class Config {
      *
      * @return String
      */
-    public String toAfk() {
+    protected String toAfk() {
         return cfg.getString("Messages.+afk");
     }
 
@@ -97,7 +97,7 @@ class Config {
      *
      * @return String
      */
-    public String noAfk() {
+    protected String noAfk() {
         return cfg.getString("Messages.-afk");
     }
 }

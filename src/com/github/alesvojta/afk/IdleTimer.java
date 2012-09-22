@@ -19,7 +19,7 @@ class IdleTimer implements Runnable {
      * @param player Player
      * @param plugin AFK Plugin
      */
-    IdleTimer(Player player, AFK plugin) {
+    protected IdleTimer(Player player, AFK plugin) {
         this.player = player;
         this.plugin = plugin;
         updatePlayer();

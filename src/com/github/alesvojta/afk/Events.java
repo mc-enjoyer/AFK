@@ -20,7 +20,7 @@ class Events implements Listener {
      *
      * @param plugin Plugin
      */
-    Events(AFK plugin) {
+    protected Events(AFK plugin) {
         this.taskMap = new HashMap<String, Integer>();
         this.plugin = plugin;
     }
