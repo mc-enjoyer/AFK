@@ -36,6 +36,16 @@ class Events implements Listener {
     }
 
     /**
+     * Checks if taskMap contains player.
+     *
+     * @param event Player event
+     * @return Boolean
+     */
+    private boolean hasTask(PlayerEvent event) {
+        return this.taskMap.containsKey(event.getPlayer().getName());
+    }
+
+    /**
      * Removes Player from taskMap.
      *
      * @param event Player Event
@@ -92,7 +102,7 @@ class Events implements Listener {
     private void onPlayerQuit(PlayerQuitEvent event) {
         AFK.removePlayerFromAfkMap(event.getPlayer());
         AFK.removePlayerFromTimeMap(event.getPlayer());
-        if (plugin.getCfg().idleTimer()) {
+        if (plugin.getCfg().idleTimer() && hasTask(event)) {
             plugin.getServer().getScheduler().cancelTask(getTaskId(event));
             removePlayer(event);
         }
@@ -107,7 +117,7 @@ class Events implements Listener {
     private void onPlayerKicked(PlayerKickEvent event) {
         AFK.removePlayerFromAfkMap(event.getPlayer());
         AFK.removePlayerFromTimeMap(event.getPlayer());
-        if (plugin.getCfg().idleTimer()) {
+        if (plugin.getCfg().idleTimer() && hasTask(event)) {
             plugin.getServer().getScheduler().cancelTask(getTaskId(event));
             removePlayer(event);
         }

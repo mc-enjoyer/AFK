@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version bukkit-1.3.2-R0, JRE 7
+ * @version bukkit-1.3.2-R1, JRE 7
  */
 public class AFK extends JavaPlugin {
 
@@ -131,7 +131,7 @@ public class AFK extends JavaPlugin {
         }
 
         /*
-         * If is Players name longer than 14 chars, it cuts the name about 2 chars (color tag).
+         * If Players name is longer than 14 chars, it cuts 2 chars (color tag) from the name.
          *
          * @param tempName Temporary Players name after conversion
          */
