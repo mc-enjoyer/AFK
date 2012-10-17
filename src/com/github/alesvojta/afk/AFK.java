@@ -1,5 +1,6 @@
 package com.github.alesvojta.afk;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version bukkit-1.3.2-R1, JRE 7
+ * @version bukkit-1.3.2-R2, JRE 7
  */
 public class AFK extends JavaPlugin {
 
@@ -21,31 +22,31 @@ public class AFK extends JavaPlugin {
     /**
      * Returns true if afkPlayerMap contains Player.
      *
-     * @param player Player
+     * @param playerName Player
      * @return Boolean
      */
-    public static boolean isPlayerAfk(Player player) {
-        return afkPlayerMap.containsKey(player.getName());
+    public static boolean isPlayerAfk(String playerName) {
+        return afkPlayerMap.containsKey(playerName);
     }
 
     /**
      * Returns timestamp when Player gets AFK.
      *
-     * @param player Player
+     * @param playerName Player
      * @return Long
      */
-    public static long getPlayerAfkTime(Player player) {
-        return afkTimeMap.get(player.getName());
+    public static long getPlayerAfkTime(String playerName) {
+        return afkTimeMap.get(playerName);
     }
 
     /**
      * Returns Players name.
      *
-     * @param player Player
+     * @param playerName Player
      * @return String
      */
-    protected static String getAfkPlayerName(Player player) {
-        return afkPlayerMap.get(player.getName());
+    protected static String getAfkPlayerName(String playerName) {
+        return afkPlayerMap.get(playerName);
     }
 
     /**
@@ -60,38 +61,38 @@ public class AFK extends JavaPlugin {
     /**
      * Puts Player to afkPlayerMap.
      *
-     * @param player Player
+     * @param playerName Player
      */
-    protected static void putPlayerToAfkMap(Player player) {
-        afkPlayerMap.put(player.getName(), player.getPlayerListName());
+    protected static void putPlayerToAfkMap(String playerName) {
+        afkPlayerMap.put(playerName, Bukkit.getPlayer(playerName).getPlayerListName());
     }
 
     /**
      * Removes Player from afkPlayerMap.
      *
-     * @param player Player
+     * @param playerName Player
      */
-    protected static void removePlayerFromAfkMap(Player player) {
-        afkPlayerMap.remove(player.getName());
+    protected static void removePlayerFromAfkMap(String playerName) {
+        afkPlayerMap.remove(playerName);
     }
 
     /**
      * Puts PLayer to afkTimeMap.
      *
-     * @param player Player
+     * @param playerName Player
      */
-    protected static void putPlayerToTimeMap(Player player) {
-        afkTimeMap.put(player.getName(), player.getPlayerTime());
-        player.resetPlayerTime();
+    protected static void putPlayerToTimeMap(String playerName) {
+        afkTimeMap.put(playerName, Bukkit.getPlayer(playerName).getPlayerTime());
+        Bukkit.getPlayer(playerName).resetPlayerTime();
     }
 
     /**
      * Removes player from afkTimeMap.
      *
-     * @param player PLayer
+     * @param playerName PLayer
      */
-    protected static void removePlayerFromTimeMap(Player player) {
-        afkTimeMap.remove(player.getName());
+    protected static void removePlayerFromTimeMap(String playerName) {
+        afkTimeMap.remove(playerName);
     }
 
     @Override
@@ -114,8 +115,8 @@ public class AFK extends JavaPlugin {
      * @param player Player
      */
     protected void becomeAFK(Player player) {
-        putPlayerToAfkMap(player);
-        putPlayerToTimeMap(player);
+        putPlayerToAfkMap(player.getName());
+        putPlayerToTimeMap(player.getName());
 
         if (getCfg().serverMessages()) {
             String afkMessage = getCfg().toAfk();
@@ -170,8 +171,8 @@ public class AFK extends JavaPlugin {
             }
         }
 
-        player.setPlayerListName(getAfkPlayerName(player));
-        removePlayerFromAfkMap(player);
+        player.setPlayerListName(getAfkPlayerName(player.getName()));
+        removePlayerFromAfkMap(player.getName());
     }
 
     /**
@@ -181,7 +182,7 @@ public class AFK extends JavaPlugin {
      * @return String
      */
     private String returnAfkTime(Player player) {
-        long oldTime = getPlayerAfkTime(player);
+        long oldTime = getPlayerAfkTime(player.getName());
         long newTime = player.getPlayerTime();
 
         long minutes = ((newTime - oldTime) / 20) / 60;
@@ -189,7 +190,7 @@ public class AFK extends JavaPlugin {
 
         String time = (minutes == 0) ? seconds + "s" : minutes + "m" + seconds + "s";
 
-        removePlayerFromTimeMap(player);
+        removePlayerFromTimeMap(player.getName());
         return time;
     }
 
@@ -210,7 +211,7 @@ public class AFK extends JavaPlugin {
         }
 
         if (cmd.getName().equalsIgnoreCase("afk")) {
-            if (isPlayerAfk((Player) sender)) {
+            if (isPlayerAfk(sender.getName())) {
                 cancelAFK((Player) sender);
                 return true;
             } else {

@@ -1,5 +1,6 @@
 package com.github.alesvojta.afk;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -16,11 +17,11 @@ class IdleTimer implements Runnable {
      * Constructor initialize variables.
      * It calls updatePlayer() which updates Players location.
      *
-     * @param player Player
-     * @param plugin AFK Plugin
+     * @param playerName Player
+     * @param plugin     AFK Plugin
      */
-    protected IdleTimer(Player player, AFK plugin) {
-        this.player = player;
+    protected IdleTimer(String playerName, AFK plugin) {
+        this.player = Bukkit.getPlayer(playerName);
         this.plugin = plugin;
         updatePlayer();
     }
@@ -30,7 +31,7 @@ class IdleTimer implements Runnable {
      */
     @Override
     public void run() {
-        if (player.getLocation().equals(lastLocation) && !AFK.isPlayerAfk(player)) {
+        if (player.getLocation().equals(lastLocation) && !AFK.isPlayerAfk(player.getName())) {
             long idleTime = plugin.getCfg().idleTime() * 20;
             player.setPlayerTime(-idleTime, true);
             plugin.becomeAFK(player);
