@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version bukkit-1.3.2-R2, JRE 7
+ * @version bukkit-1.4.2-R0.3, JRE 7
  */
 public class AFK extends JavaPlugin {
 

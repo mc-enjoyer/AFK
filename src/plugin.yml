@@ -1,11 +1,11 @@
 name: AFK
 main: com.github.alesvojta.afk.AFK
-version: 3.4.0
+version: 3.4.1
 author: Aleš Vojta / schneckk
 description: Provides AFK messages
 website: http://dev.bukkit.org/server-mods/afk/
 
 commands:
-    afk:
-      description: Provides AFK message when player types /afk.
-      usage: /<command>
+  afk:
+    description: Provides AFK message when player types /afk.
+    usage: /<command>
