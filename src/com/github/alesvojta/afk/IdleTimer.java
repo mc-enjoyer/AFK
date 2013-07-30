@@ -1,29 +1,27 @@
 package com.github.alesvojta.afk;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
  */
 class IdleTimer implements Runnable {
 
-    private final Player player;
     private final AFK plugin;
-    private Location lastLocation;
+    private HashMap<String, Location> locationMap;
 
     /**
      * Constructor initialize variables.
      * It calls updatePlayer() which updates Players location.
      *
-     * @param playerName Player
-     * @param plugin     AFK Plugin
+     * @param plugin AFK Plugin
      */
-    protected IdleTimer(String playerName, AFK plugin) {
-        this.player = Bukkit.getPlayer(playerName);
+    protected IdleTimer(AFK plugin) {
         this.plugin = plugin;
-        updatePlayer();
+        this.locationMap = new HashMap<String, Location>();
     }
 
     /**
@@ -31,19 +29,15 @@ class IdleTimer implements Runnable {
      */
     @Override
     public void run() {
-        if (player.getLocation().equals(lastLocation) && !AFK.isPlayerAfk(player.getName())) {
-            long idleTime = plugin.getCfg().idleTime() * 20;
-            player.setPlayerTime(-idleTime, true);
-            plugin.becomeAFK(player);
-            return;
+        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
+            if (this.locationMap.containsKey(player.getName())) {
+                if (plugin.getLocationMap().get(player.getName()).equals(player.getLocation()) && !AFK.isPlayerAfk(player.getName())) {
+                    long idleTime = plugin.getCfg().idleTime() * 20;
+                    player.setPlayerTime(-idleTime, true);
+                    plugin.becomeAfk(player.getName());
+                }
+            }
+            plugin.getLocationMap().put(player.getName(), player.getLocation());
         }
-        updatePlayer();
-    }
-
-    /**
-     * Updates Players location.
-     */
-    private void updatePlayer() {
-        lastLocation = player.getLocation();
     }
 }

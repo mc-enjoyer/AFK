@@ -2,10 +2,10 @@
 Bukkit plugin for Minecraft.
 http://dev.bukkit.org/server-mods/afk/
 
-Version: 3.3.3	(bukkit-1.3.2-R0.2)
+Version: 4.0.0	(bukkit-1.5.2-R1.0)
 Commands: /afk
 Command sets player AFK. Same command or chat input sets player no-AFK. AFK can be canceled by moving as well.
 
 Message keys:
-{DISPLAYNAME}	Displays player name (ex: schneckk)
-{AFKTIME}	Displays time (ex: 3m15s)
+{PLAYER}	Displays player name (ex: schneckk)
+{TIME}	    Displays afk time (ex: 3m15s)

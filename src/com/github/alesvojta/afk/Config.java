@@ -84,7 +84,7 @@ class Config {
     }
 
     /**
-     * AFK message. When the Player become AFK.
+     * AFK message. When the Player becomes AFK.
      *
      * @return String
      */
@@ -93,7 +93,7 @@ class Config {
     }
 
     /**
-     * AFK message. When the Player cancel AFK.
+     * AFK message. When the Player cancels AFK.
      *
      * @return String
      */

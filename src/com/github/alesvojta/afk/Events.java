@@ -13,7 +13,6 @@ import java.util.HashMap;
 class Events implements Listener {
 
     private final AFK plugin;
-    private final HashMap<String, Integer> taskMap;
 
     /**
      * Constructor initializes variables.
@@ -21,47 +20,7 @@ class Events implements Listener {
      * @param plugin Plugin
      */
     protected Events(AFK plugin) {
-        this.taskMap = new HashMap<String, Integer>();
         this.plugin = plugin;
-    }
-
-    /**
-     * Adds new Idle Timer to taskMap.
-     *
-     * @param playerName Player
-     * @param id         Id
-     */
-    private void addTask(String playerName, int id) {
-        this.taskMap.put(playerName, id);
-    }
-
-    /**
-     * Checks if taskMap contains player.
-     *
-     * @param playerName Player
-     * @return Boolean
-     */
-    private boolean hasTask(String playerName) {
-        return this.taskMap.containsKey(playerName);
-    }
-
-    /**
-     * Removes Player from taskMap.
-     *
-     * @param playerName Player
-     */
-    private void removePlayer(String playerName) {
-        this.taskMap.remove(playerName);
-    }
-
-    /**
-     * Returns Task ID.
-     *
-     * @param playerName Player
-     * @return Integer
-     */
-    private int getTaskId(String playerName) {
-        return this.taskMap.get(playerName);
     }
 
     /**
@@ -76,7 +35,7 @@ class Events implements Listener {
             int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
 
             if (Math.abs(movX) > 0 || Math.abs(movZ) > 0) {
-                plugin.cancelAFK(event.getPlayer());
+                plugin.cancelAfk(event.getPlayer().getName());
             }
         }
     }
@@ -89,7 +48,7 @@ class Events implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerMessage(AsyncPlayerChatEvent event) {
         if (AFK.isPlayerAfk(event.getPlayer().getName()) && plugin.getCfg().onPlayerMessage()) {
-            plugin.cancelAFK(event.getPlayer());
+            plugin.cancelAfk(event.getPlayer().getName());
         }
     }
 
@@ -104,10 +63,7 @@ class Events implements Listener {
 
         AFK.removePlayerFromAfkMap(playerName);
         AFK.removePlayerFromTimeMap(playerName);
-        if (plugin.getCfg().idleTimer() && hasTask(playerName)) {
-            plugin.getServer().getScheduler().cancelTask(getTaskId(playerName));
-            removePlayer(playerName);
-        }
+        plugin.getLocationMap().remove(playerName);
     }
 
     /**
@@ -121,24 +77,6 @@ class Events implements Listener {
 
         AFK.removePlayerFromAfkMap(playerName);
         AFK.removePlayerFromTimeMap(playerName);
-        if (plugin.getCfg().idleTimer() && hasTask(playerName)) {
-            plugin.getServer().getScheduler().cancelTask(getTaskId(playerName));
-            removePlayer(playerName);
-        }
-    }
-
-    /**
-     * When Player logs in, it automatically sets Idle Timer.
-     *
-     * @param event Player join event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerJoin(PlayerJoinEvent event) {
-        String playerName = event.getPlayer().getName();
-
-        if (plugin.getCfg().idleTimer() && !hasTask(playerName)) {
-            int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new IdleTimer(playerName, plugin), 20L * plugin.getCfg().idleTime(), 20L * plugin.getCfg().idleTime());
-            addTask(playerName, id);
-        }
+        plugin.getLocationMap().remove(playerName);
     }
 }
