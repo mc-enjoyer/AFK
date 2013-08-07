@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
- * @version bukkit-1.6.2-R0.1, JRE 7
+ * @version bukkit-1.6.2-R0.2, JRE 7
  */
 public class AFK extends JavaPlugin {
 
@@ -23,15 +23,15 @@ public class AFK extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (this.getCfg().idleTimer()) {
-            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new IdleTimer(this), 20L * this.getCfg().idleTime(), 20L * this.getCfg().idleTime());
-        }
-
-        Bukkit.getServer().getPluginManager().registerEvents(new Events(this), this);
         this.config = new Config(this);
         this.locationMap = new HashMap<String, Location>();
         afkPlayerMap = new HashMap<String, String>();
         afkTimeMap = new HashMap<String, Long>();
+
+        if (this.getCfg().idleTimer()) {
+            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new IdleTimer(this), 20L * this.getCfg().idleTime(), 20L * this.getCfg().idleTime());
+        }
+        Bukkit.getServer().getPluginManager().registerEvents(new Events(this), this);
     }
 
     @Override
@@ -74,17 +74,17 @@ public class AFK extends JavaPlugin {
      *
      * @param playerName Players name
      */
-    protected void becomeAfk(String playerName) {
+    void becomeAfk(String playerName) {
         putPlayerToAfkMap(playerName);
         putPlayerToTimeMap(playerName);
 
         if (this.config.serverMessages()) {
             String afkMessage = this.config.toAfk();
             String fallbackMessage = Bukkit.getPlayer(playerName) + " is now AFK";
-            ChatColor color = ChatColor.valueOf(this.config.serverMessagesColor());
+            ChatColor color = this.config.serverMessagesColor();
 
-            if (afkMessage.matches(".*\\{PLAYER}.*")) {
-                afkMessage = afkMessage.replaceAll("\\{PLAYER}", playerName);
+            if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
                 Bukkit.broadcastMessage(color + afkMessage);
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
@@ -98,11 +98,11 @@ public class AFK extends JavaPlugin {
          */
         if (playerName.length() > 14) {
             String tempName = playerName.substring(0, 13);
-            ChatColor color = ChatColor.valueOf(this.config.playerListColor());
+            ChatColor color = this.config.playerListColor();
 
             Bukkit.getPlayer(playerName).setPlayerListName(color + tempName);
         } else {
-            ChatColor color = ChatColor.valueOf(this.config.playerListColor());
+            ChatColor color = this.config.playerListColor();
 
             Bukkit.getPlayer(playerName).setPlayerListName(color + playerName);
         }
@@ -113,17 +113,17 @@ public class AFK extends JavaPlugin {
      *
      * @param playerName Players name
      */
-    protected void cancelAfk(String playerName) {
+    void cancelAfk(String playerName) {
         if (this.config.serverMessages()) {
             String afkMessage = this.config.noAfk();
             String fallbackMessage = playerName + " is no longer AFK.";
-            ChatColor color = ChatColor.valueOf(this.config.serverMessagesColor());
+            ChatColor color = this.config.serverMessagesColor();
 
             if (afkMessage.matches(".*\\{TIME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{TIME}", this.returnAfkTime(playerName));
             }
-            if (afkMessage.matches(".*\\{PLAYER}.*")) {
-                afkMessage = afkMessage.replaceAll("\\{PLAYER}", playerName);
+            if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
                 Bukkit.broadcastMessage(color + afkMessage);
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
@@ -140,7 +140,7 @@ public class AFK extends JavaPlugin {
      * @param playerName Players name
      * @return String
      */
-    protected String returnAfkTime(String playerName) {
+    String returnAfkTime(String playerName) {
         long oldTime = getPlayerAfkTime(playerName);
         long currentTime = Bukkit.getPlayer(playerName).getPlayerTime();
 
@@ -155,7 +155,7 @@ public class AFK extends JavaPlugin {
      *
      * @return Config
      */
-    protected Config getCfg() {
+    Config getCfg() {
         return this.config;
     }
 
@@ -164,36 +164,75 @@ public class AFK extends JavaPlugin {
      *
      * @return LocationHashMap
      */
-    protected HashMap<String, Location> getLocationMap() {
+    HashMap<String, Location> getLocationMap() {
         return this.locationMap;
     }
 
     //    PUBLIC API
+
+    /**
+     * Puts Player to AFK hash map.
+     *
+     * @param PlayerName PLayers name
+     */
     public static void putPlayerToAfkMap(String PlayerName) {
         afkPlayerMap.put(PlayerName, Bukkit.getPlayer(PlayerName).getPlayerListName());
     }
 
+    /**
+     * Removes Player from AFK hash map.
+     *
+     * @param playerName Players name
+     */
     public static void removePlayerFromAfkMap(String playerName) {
         afkPlayerMap.remove(playerName);
     }
 
+    /**
+     * Returns original Players name from AFK hash map.
+     *
+     * @param playerName Players name
+     * @return String|null
+     */
     public static String getAfkPlayerName(String playerName) {
         return afkPlayerMap.get(playerName);
     }
 
+    /**
+     * Puts Player to AFK time hash map.
+     *
+     * @param playerName Players name
+     */
     public static void putPlayerToTimeMap(String playerName) {
         afkTimeMap.put(playerName, Bukkit.getPlayer(playerName).getPlayerTime());
         Bukkit.getPlayer(playerName).resetPlayerTime();
     }
 
+    /**
+     * Removes Player from AFK time hash map.
+     *
+     * @param playerName Players name
+     */
     public static void removePlayerFromTimeMap(String playerName) {
         afkTimeMap.remove(playerName);
     }
 
+    /**
+     * Returns Players time from AFK time hash map.
+     *
+     * @param playerName Players name
+     * @return Long|null
+     */
     public static Long getPlayerAfkTime(String playerName) {
         return afkTimeMap.get(playerName);
     }
 
+    /**
+     * Returns whether is Player AFK or not.
+     *
+     * @param playerName Players name
+     * @return boolean
+     */
     public static boolean isPlayerAfk(String playerName) {
         return afkPlayerMap.containsKey(playerName);
     }

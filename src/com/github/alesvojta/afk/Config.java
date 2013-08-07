@@ -1,6 +1,9 @@
 package com.github.alesvojta.afk;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
+
+import static org.bukkit.Bukkit.*;
 
 /**
  * @author Aleš Vojta (https://github.com/alesvojta)
@@ -14,7 +17,7 @@ class Config {
      *
      * @param plugin Plugin
      */
-    protected Config(AFK plugin) {
+    Config(AFK plugin) {
         this.cfg = plugin.getConfig();
         cfg.options().copyDefaults(true);
         plugin.saveConfig();
@@ -25,7 +28,7 @@ class Config {
      *
      * @return Boolean
      */
-    protected boolean onPlayerMove() {
+    boolean onPlayerMove() {
         return cfg.getBoolean("Events.move");
     }
 
@@ -34,26 +37,36 @@ class Config {
      *
      * @return Boolean
      */
-    protected boolean onPlayerMessage() {
+    boolean onPlayerMessage() {
         return cfg.getBoolean("Events.chat");
     }
 
     /**
      * Server messages color.
      *
-     * @return String
+     * @return ChatColor
      */
-    protected String serverMessagesColor() {
-        return cfg.getString("Colors.message").toUpperCase();
+    ChatColor serverMessagesColor() {
+        try {
+            return ChatColor.valueOf(cfg.getString("Colors.message").toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            getLogger().warning("[AFK] " + ex.toString());
+            return ChatColor.GRAY;
+        }
     }
 
     /**
      * Player List AFK name color.
      *
-     * @return String
+     * @return ChatColor
      */
-    protected String playerListColor() {
-        return cfg.getString("Colors.player").toUpperCase();
+    ChatColor playerListColor() {
+        try {
+            return ChatColor.valueOf(cfg.getString("Colors.player").toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            getLogger().warning("[AFK] " + ex.toString());
+            return ChatColor.GRAY;
+        }
     }
 
     /**
@@ -61,7 +74,7 @@ class Config {
      *
      * @return Boolean
      */
-    protected boolean idleTimer() {
+    boolean idleTimer() {
         return cfg.getBoolean("IdleTimer.enabled");
     }
 
@@ -70,7 +83,7 @@ class Config {
      *
      * @return Integer
      */
-    protected int idleTime() {
+    int idleTime() {
         return cfg.getInt("IdleTimer.period");
     }
 
@@ -79,7 +92,7 @@ class Config {
      *
      * @return Boolean
      */
-    protected boolean serverMessages() {
+    boolean serverMessages() {
         return cfg.getBoolean("Messages.enabled");
     }
 
@@ -88,7 +101,7 @@ class Config {
      *
      * @return String
      */
-    protected String toAfk() {
+    String toAfk() {
         return cfg.getString("Messages.+afk");
     }
 
@@ -97,7 +110,7 @@ class Config {
      *
      * @return String
      */
-    protected String noAfk() {
+    String noAfk() {
         return cfg.getString("Messages.-afk");
     }
 }

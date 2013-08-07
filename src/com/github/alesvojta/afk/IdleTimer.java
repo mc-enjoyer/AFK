@@ -11,7 +11,6 @@ import java.util.HashMap;
 class IdleTimer implements Runnable {
 
     private final AFK plugin;
-    private HashMap<String, Location> locationMap;
 
     /**
      * Constructor initialize variables.
@@ -19,9 +18,8 @@ class IdleTimer implements Runnable {
      *
      * @param plugin AFK Plugin
      */
-    protected IdleTimer(AFK plugin) {
+    IdleTimer(AFK plugin) {
         this.plugin = plugin;
-        this.locationMap = new HashMap<String, Location>();
     }
 
     /**
@@ -30,14 +28,14 @@ class IdleTimer implements Runnable {
     @Override
     public void run() {
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
-            if (this.locationMap.containsKey(player.getName())) {
-                if (plugin.getLocationMap().get(player.getName()).equals(player.getLocation()) && !AFK.isPlayerAfk(player.getName())) {
-                    long idleTime = plugin.getCfg().idleTime() * 20;
+            if (this.plugin.getLocationMap().containsKey(player.getName())) {
+                if (this.plugin.getLocationMap().get(player.getName()).equals(player.getLocation()) && !AFK.isPlayerAfk(player.getName())) {
+                    long idleTime = this.plugin.getCfg().idleTime() * 20;
                     player.setPlayerTime(-idleTime, true);
-                    plugin.becomeAfk(player.getName());
+                    this.plugin.becomeAfk(player.getName());
                 }
             }
-            plugin.getLocationMap().put(player.getName(), player.getLocation());
+            this.plugin.getLocationMap().put(player.getName(), player.getLocation());
         }
     }
 }

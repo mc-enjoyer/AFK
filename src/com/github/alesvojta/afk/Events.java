@@ -19,7 +19,7 @@ class Events implements Listener {
      *
      * @param plugin Plugin
      */
-    protected Events(AFK plugin) {
+    Events(AFK plugin) {
         this.plugin = plugin;
     }
 

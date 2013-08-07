@@ -1,7 +1,7 @@
 # Events: def. true
-# Colors: def. gray [black, dark_blue, dark_green, dark_aqua, dark_red, purple, gold, gray, dark_gray, indigo, bright_green, aqua, red, pink, yellow, white]
+# Colors: def. gray [black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, white]
 # IdleTimer: def. true, 60 sec
-# Messages: def. true (keys: {PLAYER}, {TIME})
+# Messages: def. true (keys: {DISPLAYNAME}, {TIME})
 Events:
   move: true
   chat: true
@@ -13,5 +13,5 @@ IdleTimer:
   period: 60
 Messages:
   enabled: true
-  +afk: '{PLAYER} is now AFK'
-  -afk: '{PLAYER} is no longer AFK'
+  +afk: '{DISPLAYNAME} is now AFK'
+  -afk: '{DISPLAYNAME} is no longer AFK'
