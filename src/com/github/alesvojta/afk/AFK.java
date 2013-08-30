@@ -124,9 +124,9 @@ public class AFK extends JavaPlugin {
             }
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
-                Bukkit.broadcastMessage(color + afkMessage);
+                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
-                Bukkit.broadcastMessage(color + fallbackMessage);
+                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', fallbackMessage));
             }
         }
 
