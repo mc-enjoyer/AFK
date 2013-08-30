@@ -78,14 +78,16 @@ public class AFK extends JavaPlugin {
         putPlayerToAfkMap(playerName);
         putPlayerToTimeMap(playerName);
 
+        playerName = Bukkit.getPlayer(playerName).getPlayerListName();
+
         if (this.config.serverMessages()) {
             String afkMessage = this.config.toAfk();
-            String fallbackMessage = Bukkit.getPlayer(playerName) + " is now AFK";
+            String fallbackMessage = playerName + " is now AFK";
             ChatColor color = this.config.serverMessagesColor();
 
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
-                Bukkit.broadcastMessage(color + afkMessage);
+                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
             }
@@ -126,7 +128,7 @@ public class AFK extends JavaPlugin {
                 afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
                 Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
-                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', fallbackMessage));
+                Bukkit.broadcastMessage(color + fallbackMessage);
             }
         }
 
