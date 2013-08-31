@@ -78,7 +78,7 @@ public class AFK extends JavaPlugin {
         putPlayerToAfkMap(playerName);
         putPlayerToTimeMap(playerName);
 
-        playerName = Bukkit.getPlayer(playerName).getPlayerListName();
+        //playerName = Bukkit.getPlayer(playerName).getPlayerListName();
 
         if (this.config.serverMessages()) {
             String afkMessage = this.config.toAfk();
@@ -86,7 +86,8 @@ public class AFK extends JavaPlugin {
             ChatColor color = this.config.serverMessagesColor();
 
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
+                //afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", Bukkit.getPlayer(playerName).getPlayerListName());
                 Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
@@ -98,14 +99,11 @@ public class AFK extends JavaPlugin {
          *
          * @param tempName Temporary Players name after conversion
          */
+        ChatColor color = this.config.playerListColor();
         if (playerName.length() > 14) {
             String tempName = playerName.substring(0, 13);
-            ChatColor color = this.config.playerListColor();
-
             Bukkit.getPlayer(playerName).setPlayerListName(color + tempName);
         } else {
-            ChatColor color = this.config.playerListColor();
-
             Bukkit.getPlayer(playerName).setPlayerListName(color + playerName);
         }
     }
