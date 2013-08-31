@@ -123,7 +123,8 @@ public class AFK extends JavaPlugin {
                 afkMessage = afkMessage.replaceAll("\\{TIME}", this.returnAfkTime(playerName));
             }
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
+                //afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", Bukkit.getPlayer(playerName).getPlayerListName());
                 Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
