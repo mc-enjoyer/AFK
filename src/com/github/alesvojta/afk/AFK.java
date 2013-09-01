@@ -59,9 +59,11 @@ public class AFK extends JavaPlugin {
 
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (isPlayerAfk(sender.getName())) {
-                this.cancelAfk(sender.getName());
+                //this.cancelAfk(sender.getName());
+                this.afk(sender.getName(), true);
             } else {
-                this.becomeAfk(sender.getName());
+                //this.becomeAfk(sender.getName());
+                this.afk(sender.getName(), false);
             }
             return true;
         }
@@ -70,69 +72,55 @@ public class AFK extends JavaPlugin {
     }
 
     /**
-     * Sets Player to AFK state and broadcasts message.
+     * Provides setting and resetting AFK status on Player and server messages.
      *
-     * @param playerName Players name
+     * @param playerName Player's name
+     * @param afk        AFK status
      */
-    void becomeAfk(String playerName) {
-        putPlayerToAfkMap(playerName);
-        putPlayerToTimeMap(playerName);
+    void afk(String playerName, boolean afk) {
+        String afkMessage;
+        String fallbackMessage;
+        ChatColor color = this.config.serverMessagesColor();
 
-        //playerName = Bukkit.getPlayer(playerName).getPlayerListName();
-
-        if (this.config.serverMessages()) {
-            String afkMessage = this.config.toAfk();
-            String fallbackMessage = playerName + " is now AFK";
-            ChatColor color = this.config.serverMessagesColor();
-
-            if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-                //afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
-                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", Bukkit.getPlayer(playerName).getPlayerListName());
-                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
-            } else {
-                Bukkit.broadcastMessage(color + fallbackMessage);
-            }
-        }
-
-        /*
-         * If Players name is longer than 14 chars, it cuts 2 chars (color tag) from the name.
-         *
-         * @param tempName Temporary Players name after conversion
-         */
-        ChatColor color = this.config.playerListColor();
-        if (playerName.length() > 14) {
-            String tempName = playerName.substring(0, 13);
-            Bukkit.getPlayer(playerName).setPlayerListName(color + tempName);
-        } else {
-            Bukkit.getPlayer(playerName).setPlayerListName(color + playerName);
-        }
-    }
-
-    /**
-     * Removes AFK state from player and broadcasts message.
-     *
-     * @param playerName Players name
-     */
-    void cancelAfk(String playerName) {
-        if (this.config.serverMessages()) {
-            String afkMessage = this.config.noAfk();
-            String fallbackMessage = playerName + " is no longer AFK.";
-            ChatColor color = this.config.serverMessagesColor();
+        if (afk) {
+            afkMessage = this.config.noAfk();
+            fallbackMessage = playerName + " is no longer AFK.";
 
             if (afkMessage.matches(".*\\{TIME}.*")) {
                 afkMessage = afkMessage.replaceAll("\\{TIME}", this.returnAfkTime(playerName));
             }
+
+            Bukkit.getPlayer(playerName).setPlayerListName(getAfkPlayerName(playerName));
+            removePlayerFromAfkMap(playerName);
+        } else {
+            putPlayerToAfkMap(playerName);
+            putPlayerToTimeMap(playerName);
+
+            afkMessage = this.config.toAfk();
+            fallbackMessage = playerName + " is now AFK";
+
+            /*
+             * If Players name is longer than 14 chars, it cuts 2 chars (color tag) from the name.
+             *
+             * @param tempName Temporary Players name after conversion
+             */
+            if (playerName.length() > 14) {
+                String tempName = playerName.substring(0, 13);
+                Bukkit.getPlayer(playerName).setPlayerListName(this.config.playerListColor() + tempName);
+            } else {
+                Bukkit.getPlayer(playerName).setPlayerListName(this.config.playerListColor() + playerName);
+            }
+        }
+
+        if (this.config.serverMessages()) {
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-                //afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", playerName);
-                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", Bukkit.getPlayer(playerName).getPlayerListName());
+                String name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", name);
                 Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
                 Bukkit.broadcastMessage(color + fallbackMessage);
             }
         }
-
-        Bukkit.getPlayer(playerName).setPlayerListName(getAfkPlayerName(playerName));
-        removePlayerFromAfkMap(playerName);
     }
 
     /**
@@ -236,5 +224,73 @@ public class AFK extends JavaPlugin {
      */
     public static boolean isPlayerAfk(String playerName) {
         return afkPlayerMap.containsKey(playerName);
+    }
+
+    //    DEPRECATED
+
+    /**
+     * Sets Player to AFK state and broadcasts message.
+     *
+     * @param playerName Players name
+     */
+    @Deprecated
+    void becomeAfk(String playerName) {
+        putPlayerToAfkMap(playerName);
+        putPlayerToTimeMap(playerName);
+
+        if (this.config.serverMessages()) {
+            String afkMessage = this.config.toAfk();
+            String fallbackMessage = playerName + " is now AFK";
+            ChatColor color = this.config.serverMessagesColor();
+
+            if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
+                String name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", name);
+                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
+            } else {
+                Bukkit.broadcastMessage(color + fallbackMessage);
+            }
+        }
+
+        /*
+         * If Players name is longer than 14 chars, it cuts 2 chars (color tag) from the name.
+         *
+         * @param tempName Temporary Players name after conversion
+         */
+        ChatColor color = this.config.playerListColor();
+        if (playerName.length() > 14) {
+            String tempName = playerName.substring(0, 13);
+            Bukkit.getPlayer(playerName).setPlayerListName(color + tempName);
+        } else {
+            Bukkit.getPlayer(playerName).setPlayerListName(color + playerName);
+        }
+    }
+
+    /**
+     * Removes AFK state from player and broadcasts message.
+     *
+     * @param playerName Players name
+     */
+    @Deprecated
+    void cancelAfk(String playerName) {
+        if (this.config.serverMessages()) {
+            String afkMessage = this.config.noAfk();
+            String fallbackMessage = playerName + " is no longer AFK.";
+            ChatColor color = this.config.serverMessagesColor();
+
+            if (afkMessage.matches(".*\\{TIME}.*")) {
+                afkMessage = afkMessage.replaceAll("\\{TIME}", this.returnAfkTime(playerName));
+            }
+            if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
+                String name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
+                afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", name);
+                Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
+            } else {
+                Bukkit.broadcastMessage(color + fallbackMessage);
+            }
+        }
+
+        Bukkit.getPlayer(playerName).setPlayerListName(getAfkPlayerName(playerName));
+        removePlayerFromAfkMap(playerName);
     }
 }

@@ -32,7 +32,8 @@ class IdleTimer implements Runnable {
                 if (this.plugin.getLocationMap().get(player.getName()).equals(player.getLocation()) && !AFK.isPlayerAfk(player.getName())) {
                     long idleTime = this.plugin.getCfg().idleTime() * 20;
                     player.setPlayerTime(-idleTime, true);
-                    this.plugin.becomeAfk(player.getName());
+                    //this.plugin.becomeAfk(player.getName());
+                    this.plugin.afk(player.getName(), false);
                 }
             }
             this.plugin.getLocationMap().put(player.getName(), player.getLocation());

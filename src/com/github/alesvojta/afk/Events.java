@@ -35,7 +35,8 @@ class Events implements Listener {
             int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
 
             if (Math.abs(movX) > 0 || Math.abs(movZ) > 0) {
-                plugin.cancelAfk(event.getPlayer().getName());
+                //plugin.cancelAfk(event.getPlayer().getName());
+                plugin.afk(event.getPlayer().getName(), true);
             }
         }
     }
@@ -48,7 +49,8 @@ class Events implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerMessage(AsyncPlayerChatEvent event) {
         if (AFK.isPlayerAfk(event.getPlayer().getName()) && plugin.getCfg().onPlayerMessage()) {
-            plugin.cancelAfk(event.getPlayer().getName());
+            //plugin.cancelAfk(event.getPlayer().getName());
+            plugin.afk(event.getPlayer().getName(), true);
         }
     }
 
