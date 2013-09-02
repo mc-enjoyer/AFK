@@ -13,5 +13,6 @@ IdleTimer:
   period: 60
 Messages:
   enabled: true
+  nicknames: false
   +afk: '{DISPLAYNAME} is now AFK'
   -afk: '{DISPLAYNAME} is no longer AFK'

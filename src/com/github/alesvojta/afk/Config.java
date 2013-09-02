@@ -97,6 +97,15 @@ class Config {
     }
 
     /**
+     * Whether displays nickname or Player's name.
+     *
+     * @return Boolean
+     */
+    boolean displayNicknames() {
+        return cfg.getBoolean("Messages.nicknames");
+    }
+
+    /**
      * AFK message. When the Player becomes AFK.
      *
      * @return String

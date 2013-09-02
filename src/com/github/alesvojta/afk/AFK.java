@@ -114,8 +114,14 @@ public class AFK extends JavaPlugin {
 
         if (this.config.serverMessages()) {
             if (afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-//                String name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
-                String name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getDisplayName());
+                String name;
+
+                if (this.config.displayNicknames()) {
+                    name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getDisplayName());
+                } else {
+                    name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
+                }
+
                 afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", name);
                 Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage));
             } else {
