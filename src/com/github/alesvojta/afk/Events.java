@@ -8,7 +8,7 @@ import org.bukkit.event.player.*;
 import java.util.HashMap;
 
 /**
- * @author Aleš Vojta (https://github.com/alesvojta)
+ * @author Ales Vojta (https://github.com/alesvojta)
  */
 class Events implements Listener {
 

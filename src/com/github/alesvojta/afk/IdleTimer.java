@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 /**
- * @author Aleš Vojta (https://github.com/alesvojta)
+ * @author Ales Vojta (https://github.com/alesvojta)
  */
 class IdleTimer implements Runnable {
 

@@ -6,7 +6,7 @@ import org.bukkit.configuration.Configuration;
 import static org.bukkit.Bukkit.*;
 
 /**
- * @author Aleš Vojta (https://github.com/alesvojta)
+ * @author Ales Vojta (https://github.com/alesvojta)
  */
 class Config {
 
