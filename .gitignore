@@ -1,4 +1,14 @@
-/.idea/
+# Git
 /.git/
+
+# Intellij
+/.idea/
 /out/
 /AFK.iml
+
+# Eclipce
+/bin/
+
+# Travis CI
+.travis.yml
+build.xml

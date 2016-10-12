@@ -1,84 +1,64 @@
 package com.github.alesvojta.afk;
 
+import com.github.alesvojta.afk.AFK;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-
-/**
- * @author Ales Vojta (https://github.com/alesvojta)
- */
 class Events implements Listener {
 
-    private final AFK plugin;
+   private final AFK plugin;
 
-    /**
-     * Constructor initializes variables.
-     *
-     * @param plugin Plugin
-     */
-    Events(AFK plugin) {
-        this.plugin = plugin;
-    }
 
-    /**
-     * When Player moves about 1 block is his AFK status canceled.
-     *
-     * @param event Player move event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerMove(PlayerMoveEvent event) {
-        if (AFK.isPlayerAfk(event.getPlayer().getName()) && plugin.getCfg().onPlayerMove()) {
-            int movX = event.getFrom().getBlockX() - event.getTo().getBlockX();
-            int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
+   Events(AFK plugin) {
+      this.plugin = plugin;
+   }
 
-            if (Math.abs(movX) > 0 || Math.abs(movZ) > 0) {
-                //plugin.cancelAfk(event.getPlayer().getName());
-                plugin.afk(event.getPlayer().getName(), true);
-            }
-        }
-    }
+   @EventHandler(
+      priority = EventPriority.MONITOR
+   )
+   private void onPlayerMove(PlayerMoveEvent event) {
+      if(AFK.isPlayerAfk(event.getPlayer().getName()) && this.plugin.getCfg().onPlayerMove()) {
+         int movX = event.getFrom().getBlockX() - event.getTo().getBlockX();
+         int movZ = event.getFrom().getBlockZ() - event.getTo().getBlockZ();
+         if(Math.abs(movX) > 0 || Math.abs(movZ) > 0) {
+            this.plugin.afk(event.getPlayer().getName(), true, "");
+         }
+      }
 
-    /**
-     * When Player uses chat is his AFK status canceled.
-     *
-     * @param event Player chat event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerMessage(AsyncPlayerChatEvent event) {
-        if (AFK.isPlayerAfk(event.getPlayer().getName()) && plugin.getCfg().onPlayerMessage()) {
-            //plugin.cancelAfk(event.getPlayer().getName());
-            plugin.afk(event.getPlayer().getName(), true);
-        }
-    }
+   }
 
-    /**
-     * when Player logs out is his AFK status (possibly Idle Timer) canceled.
-     *
-     * @param event Player quit event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerQuit(PlayerQuitEvent event) {
-        String playerName = event.getPlayer().getName();
+   @EventHandler(
+      priority = EventPriority.MONITOR
+   )
+   private void onPlayerMessage(AsyncPlayerChatEvent event) {
+      if(AFK.isPlayerAfk(event.getPlayer().getName()) && this.plugin.getCfg().onPlayerMessage()) {
+         this.plugin.afk(event.getPlayer().getName(), true, "");
+      }
 
-        AFK.removePlayerFromAfkMap(playerName);
-        AFK.removePlayerFromTimeMap(playerName);
-        plugin.getLocationMap().remove(playerName);
-    }
+   }
 
-    /**
-     * when is Player kicked is his AFK status (possibly Idle Timer) canceled.
-     *
-     * @param event Player kick event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onPlayerKicked(PlayerKickEvent event) {
-        String playerName = event.getPlayer().getName();
+   @EventHandler(
+      priority = EventPriority.MONITOR
+   )
+   private void onPlayerQuit(PlayerQuitEvent event) {
+      String playerName = event.getPlayer().getName();
+      AFK.removePlayerFromAfkMap(playerName);
+      AFK.removePlayerFromTimeMap(playerName);
+      this.plugin.getLocationMap().remove(playerName);
+   }
 
-        AFK.removePlayerFromAfkMap(playerName);
-        AFK.removePlayerFromTimeMap(playerName);
-        plugin.getLocationMap().remove(playerName);
-    }
+   @EventHandler(
+      priority = EventPriority.MONITOR
+   )
+   private void onPlayerKicked(PlayerKickEvent event) {
+      String playerName = event.getPlayer().getName();
+      AFK.removePlayerFromAfkMap(playerName);
+      AFK.removePlayerFromTimeMap(playerName);
+      this.plugin.getLocationMap().remove(playerName);
+   }
 }
