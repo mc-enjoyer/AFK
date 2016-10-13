@@ -13,6 +13,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author Aleš Vojta (https://github.com/alesvojta)
+ * @version bukkit-1.10-R0.1, JRE 7
+ */
 public class AFK extends JavaPlugin {
 
    private Config config;
@@ -41,6 +45,15 @@ public class AFK extends JavaPlugin {
       this.locationMap = null;
    }
 
+    /**
+     * '/afk' command controller.
+     *
+     * @param sender Command sender
+     * @param cmd    Command
+     * @param label  Command alias
+     * @param args   Other params
+    * @return boolean
+    */
    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
       if(!(sender instanceof Player)) {
          Bukkit.getLogger().info("This command can only be run by a player!");
@@ -142,22 +155,34 @@ public class AFK extends JavaPlugin {
       afkPlayerMap.remove(playerName);
    }
 
+   /**
+    * Get the afk player's name
+    */
    public static String getAfkPlayerName(String playerName) {
       return (String)afkPlayerMap.get(playerName);
    }
 
+   /**
+    * Puts the player to the AFK time map.
+    */
    public static void putPlayerToTimeMap(String playerName) {
       afkTimeMap.put(playerName, Long.valueOf(Bukkit.getPlayer(playerName).getPlayerTime()));
       Bukkit.getPlayer(playerName).resetPlayerTime();
    }
+   
+    /**
+     * Removes the player from the AFK time map.
+     */
+    public static void removePlayerFromTimeMap(String playerName) {
+        afkTimeMap.remove(playerName);
+    }
 
-   public static void removePlayerFromTimeMap(String playerName) {
-      afkTimeMap.remove(playerName);
-   }
-
-   public static Long getPlayerAfkTime(String playerName) {
-      return (Long)afkTimeMap.get(playerName);
-   }
+    /**
+     * Returns the time the player has been AFK.
+     */
+    public static Long getPlayerAfkTime(String playerName) {
+        return (Long)afkTimeMap.get(playerName);
+    }
 
    /**
     * Checks if the player is AFK.

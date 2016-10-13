@@ -10,9 +10,9 @@ class IdleTimer implements Runnable {
    private final AFK plugin;
 
 
-   IdleTimer(AFK plugin) {
+    IdleTimer(AFK plugin) {
       this.plugin = plugin;
-   }
+    }
 
    public void run() {
       Player player;
