@@ -1,6 +1,6 @@
 name: AFK
 main: com.github.alesvojta.afk.AFK
-version: 4.5.2
+version: 4.5.3
 author: schneckk
 description: Provides AFK messages
 website: http://dev.bukkit.org/bukkit-plugins/afk/
@@ -9,4 +9,4 @@ commands:
   afk:
     description: Provides AFK message when player types /afk.
     usage: /<command>
-    aliases: [awayfromkeyboard, away]
+    aliases: [awayfromkeyboard, away, aafk]
