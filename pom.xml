@@ -11,33 +11,25 @@
   <url>http://maven.apache.org</url>
   
   <build>
-    <defaultGoal>package</defaultGoal>
-    <directory>${basedir}</directory>
     <finalName>${project.artifactId}</finalName>
   </build>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
+
   <repositories>
-    <repository>
-      <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
   </repositories>
 
   <dependencies>
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.9.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.9.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+      <artifactId>craftbukkit</artifactId>
+      <version>LATEST</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/resources/alfheim-craftbukkit-1.7.2-FINAL.jar</systemPath>
     </dependency>
   </dependencies>
 </project>

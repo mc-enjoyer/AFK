@@ -12,3 +12,6 @@
 # Travis CI
 .travis.yml
 build.xml
+
+/target/
+/resources/

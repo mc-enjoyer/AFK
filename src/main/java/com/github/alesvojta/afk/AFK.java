@@ -108,12 +108,7 @@ public class AFK extends JavaPlugin {
 
       if(this.config.serverMessages()) {
          if(afkMessage.matches(".*\\{DISPLAYNAME}.*")) {
-            if(this.config.displayNicknames()) {
-               name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getDisplayName());
-            } else {
-               name = ChatColor.stripColor(Bukkit.getPlayer(playerName).getPlayerListName());
-            }
-
+            name = ChatColor.LIGHT_PURPLE + ChatColor.stripColor(Bukkit.getPlayer(playerName).getDisplayName());
             afkMessage = afkMessage.replaceAll("\\{DISPLAYNAME}", name);
             Bukkit.broadcastMessage(color + ChatColor.translateAlternateColorCodes('&', afkMessage) + reason);
          } else {
@@ -124,7 +119,7 @@ public class AFK extends JavaPlugin {
    }
 
    String returnAfkTime(String playerName) {
-      long oldTime = getPlayerAfkTime(playerName).longValue();
+      long oldTime = getPlayerAfkTime(playerName);
       long currentTime = Bukkit.getPlayer(playerName).getPlayerTime();
       long minutes = (currentTime - oldTime) / 20L / 60L;
       long seconds = (currentTime - oldTime) / 20L % 60L;
@@ -166,7 +161,7 @@ public class AFK extends JavaPlugin {
     * Puts the player to the AFK time map.
     */
    public static void putPlayerToTimeMap(String playerName) {
-      afkTimeMap.put(playerName, Long.valueOf(Bukkit.getPlayer(playerName).getPlayerTime()));
+      afkTimeMap.put(playerName, Bukkit.getPlayer(playerName).getPlayerTime());
       Bukkit.getPlayer(playerName).resetPlayerTime();
    }
    
@@ -181,7 +176,7 @@ public class AFK extends JavaPlugin {
      * Returns the time the player has been AFK.
      */
     public static Long getPlayerAfkTime(String playerName) {
-        return (Long)afkTimeMap.get(playerName);
+        return afkTimeMap.get(playerName);
     }
 
    /**
